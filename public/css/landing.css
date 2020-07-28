@@ -1,3 +1,27 @@
-img {
+html, body {
+    height: 100%;
+    width: 100%;
+    color: #30475e;
+}
+
+#image-background {
     width: 50%;
+    height: 100%;
+    background-color: #fcf8e8;
+    float: left;
+}
+
+img {
+    margin: 25% 0 0 25%;
+    width: 50%;
+}
+
+.landing-info {
+    width: 50%;
+    height: 100%;
+    float: left;
+}
+
+.landing-info .container {
+    margin-top: 29%;
 }

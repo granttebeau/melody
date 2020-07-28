@@ -13,6 +13,8 @@ var express = require("express"),
 
 var User = require("./models/user")
 
+var IndexRoutes = require("./routes/index")
+
 
 var url = process.env.DATABASEURL || "mongodb://localhost/melody"
 mongoose.connect(url, { useUnifiedTopology: true, useNewUrlParser: true })
@@ -47,46 +49,8 @@ app.use(function(req, res, next){
     next();
  });
 
-app.get("/", isLoggedIn, function(req, res) {
+app.get("/home", isLoggedIn, function(req, res) {
     res.render("home")
-})
-
-
-
-app.get('/login', function(req, res) {
-    res.render("auth/login")
-})
-
-app.get('/register', function(req, res) {
-    res.render("auth/register")
-})
-
-app.post("/login", passport.authenticate("local", {
-    successRedirect: "/",
-    failureRedirect: "/login"
-}), function(req, res) { 
-})
-
-app.post("/register", upload.single('image'), function(req, res) {
-    var username = req.body.username
-    var password = req.body.password
-    var bio = req.body.bio
-    var fullName = req.body.fullName
-    var image = req.file
-
-
-    User.register(new User({username: username, bio: bio, fullName: fullName, image: image}), password, function(err, user) {
-        if (err) {
-            console.log(err)
-            return res.render('auth/register')
-        }
-        user.image.data = fs.readFileSync(image.path)
-        user.image.contentType = 'image/jpeg'
-        user.save()
-        passport.authenticate("local")(req, res, function() {
-            res.redirect('/')
-        })
-    })
 })
 
 app.get('/profile/picture', function(req,res,next) {
@@ -97,14 +61,6 @@ app.get('/profile/picture', function(req,res,next) {
     });
   });
 
-app.get("/landing", function(req, res) {
-    res.render("landing")
-})
-
-app.get("/logout", function(req, res) {
-    req.logout()
-    res.redirect("/")
-})
 
 app.get("/profile", isLoggedIn, function(req, res) {
     res.render("profile")
@@ -114,11 +70,20 @@ app.get("/profile/notifications", function(req, res) {
     res.send("notifications")
 })
 
+app.use(IndexRoutes)
+
 
 function isLoggedIn(req, res, next) {
     if (req.isAuthenticated()) {
         return next();
     }
-    res.redirect("/landing")
+    res.redirect("/")
+}
+
+function isNotLoggedIn(req, res, next) {
+    if (req.isAuthenticated()) {
+        return res.redirect("/profile");
+    }
+    next()
 }
 app.listen(process.env.PORT || 3000, process.env.IP);

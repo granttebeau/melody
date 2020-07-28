@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Melody</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+        crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.11.2/css/all.css">
+    <link rel="stylesheet" type="text/css" href="css/landing.css" media="screen">
+</head>
+<body>
+    <div class="image-background m-0" id="image-background">
+        <img src="images/logo.png" alt="">
+        <h4 class="text-center"><i class="fas fa-music"></i> Share your music, today </h4>
+    </div>
+
+    <div class="landing-info">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-10 col-md-5">
+                    <h2 class="text-left my-3">Register now:</h2>
+                    <form action="/register" method="POST" enctype="multipart/form-data">
+                        <div class="form-group">
+                            <input class="form-control" type="text" placeholder="Username" name="username">
+                        </div>
+                        <div class="form-group">
+                            <input class="form-control" type="password" placeholder="Password" name="password">
+                        </div>
+                        <div class="form-group">
+                            <input class="form-control" type="text" placeholder="Full Name" name="fullName">
+                        </div>
+                        <div class="form-group">
+                            <input class="form-control" type="text" placeholder="Bio" name="bio">
+                        </div>
+                        <div class="form-group">
+                            <input type="file" class="form-control"
+                                id="image" name="image"
+                                accept="image/png, image/jpeg">
+                        </div>
+                        <div class="form-group">
+                            <button class="btn btn-primary btn-block ">Submit</button>
+                        </div>
+                    </form>
+                    <p>Have an account? Log in <a href="/">here</a>.</p>
+                </div>
+            
+        
+            </div>
+        </div>
+    </div>
+
+    
+</body>
+</html>
