@@ -1,7 +1,5 @@
 var mongoose = require("mongoose"),
-    passportLocalMongoose = require("passport-local-mongoose"),
-    fs = require("fs"),
-    multer = require('multer')
+    passportLocalMongoose = require("passport-local-mongoose")
 
 var userSchema = new mongoose.Schema({
     username: String,

@@ -47,7 +47,7 @@ app.use(function(req, res, next){
     next();
  });
 
-app.get("/", function(req, res) {
+app.get("/", isLoggedIn, function(req, res) {
     res.render("home")
 })
 
@@ -97,6 +97,9 @@ app.get('/profile/picture', function(req,res,next) {
     });
   });
 
+app.get("/landing", function(req, res) {
+    res.render("landing")
+})
 
 app.get("/logout", function(req, res) {
     req.logout()
@@ -107,11 +110,15 @@ app.get("/profile", isLoggedIn, function(req, res) {
     res.render("profile")
 })
 
+app.get("/profile/notifications", function(req, res) {
+    res.send("notifications")
+})
+
 
 function isLoggedIn(req, res, next) {
     if (req.isAuthenticated()) {
         return next();
     }
-    res.redirect("/login")
+    res.redirect("/landing")
 }
 app.listen(process.env.PORT || 3000, process.env.IP);
