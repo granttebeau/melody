@@ -1,0 +1,29 @@
+<%- include("partials/header") %>
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-4">
+            <h1> <%= profile.fullName %></h1>
+            <h3>@<%=profile.username%></h3>
+            <img src="/profile/<%= profile._id %>/picture" style="width: 200px;"> <br>
+        </div>
+        <div class="col-6">
+            <% if (posts.length == 0) { %>
+                <h4 class="text-center my-5">No posts yet...</h4>
+            <% } %>
+            <ul>
+                <% posts.reverse().forEach(post => {%>
+                    <li>
+                        <p>@<%=post.author.username %></p>
+                        <p><%= post.content %></p>
+                        <iframe style="position: relative; z-index: 2;" src="<%= post.song %>" width="300" height="80" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe>
+                        <p><%=post.date%></p>
+                        <% if (post.author.id.equals(user._id)) { %>
+                            <a href="/delete-post/<%= post._id %>/profile">Delete</a>
+                        <% } %>
+                    </li>
+                <% })%>
+            </ul>
+        </div>
+    </div>
+</div>
+<%- include("partials/footer") %>

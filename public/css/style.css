@@ -23,6 +23,25 @@ html, body {
     transition: .5s;
 }
 
+.posts {
+    list-style: none;
+    padding: 0;
+}
+
+.post {
+    background-color: #fcf8e8;
+    border-radius: 25px;
+    padding: 15px 15px 15px 10px;
+    margin-bottom: 15px;
+}
+.post a {
+    color: #f1935c;
+    text-decoration: none;
+}
+.post-content {
+    font-weight: 400;
+}
+
 .navbar-light {
     background-color: #fcf8e8 !important;
 }

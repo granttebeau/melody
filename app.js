@@ -30,7 +30,7 @@ app.use(methodOverride("_method"))
 
 const store = new MongoDBStore({
     uri: "mongodb://localhost/melody",
-    collection: 'posts'
+    collection: 'users'
 });
 app.use(session({
     secret: 'this is my super secret session key',
@@ -55,7 +55,12 @@ app.use(function(req, res, next){
  });
 
 app.get("/home", isLoggedIn, function(req, res) {
-    res.render("home")
+    Post.find({}, function(err, posts) {
+        if (err) {
+            return res.redirect("/home")
+        }
+        res.render("home", {posts: posts})
+    })
 })
 
 app.get('/profile/picture', function(req,res,next) {
@@ -66,6 +71,14 @@ app.get('/profile/picture', function(req,res,next) {
     });
   });
 
+app.get('/profile/:id/picture', function(req,res,next) {
+    User.findById( req.params.id, function(err,user) {
+        if (err) return next(err);
+        res.contentType(user.image.contentType);
+        res.send(user.image.data);
+    });
+});
+
 app.get("/profile", isLoggedIn, function(req, res) {
     Post.find({'author.username': req.user.username}, function(err, posts) {
         if (err) {
@@ -75,11 +88,25 @@ app.get("/profile", isLoggedIn, function(req, res) {
     })
 })
 
+app.get("/profile/:id", isLoggedIn, function(req, res) {
+    User.findById(req.params.id, function(err, user) {
+        if (err) {
+            res.redirect("/home")
+        }
+        Post.find({'author.username': user.username}, function(err, posts) {
+            if (err) {
+                res.redirect("/home")
+            }
+            res.render("other-profile", {posts: posts, profile: user})
+        })
+    })
+})
+
 app.get("/profile/notifications", function(req, res) {
     res.send("notifications")
 })
 
-app.post("/new-post", function(req, res) {
+app.post("/new-post/profile", function(req, res) {
     var content = req.body.content
     var song = req.body.song
     var post = new Post({
@@ -93,6 +120,41 @@ app.post("/new-post", function(req, res) {
     })
     post.save()
     res.redirect("/profile")
+})
+
+app.post("/new-post/home", function(req, res) {
+    var content = req.body.content
+    var song = req.body.song
+    var post = new Post({
+        content: content,
+        song: song,
+        date: Date.now(),
+        author: {
+            id: req.user._id,
+            username: req.user.username
+        }
+    })
+    post.save()
+    res.redirect("/home")
+})
+
+app.get("/delete-post/:id/profile", function(req, res) {
+    Post.findByIdAndDelete(req.params.id, function(err) {
+        if (err) {
+            console.log(err)
+            return res.redirect("/profile")
+        }
+        res.redirect("/profile")
+    })
+})
+app.get("/delete-post/:id/home", function(req, res) {
+    Post.findByIdAndDelete(req.params.id, function(err) {
+        if (err) {
+            console.log(err)
+            return res.redirect("/home")
+        }
+        res.redirect("/home")
+    })
 })
 
 
@@ -112,4 +174,33 @@ function isNotLoggedIn(req, res, next) {
     }
     next()
 }
+
+function timeSince(date) {
+
+    var seconds = Math.floor((new Date() - date) / 1000);
+  
+    var interval = Math.floor(seconds / 31536000);
+  
+    if (interval > 1) {
+      return interval + " years";
+    }
+    interval = Math.floor(seconds / 2592000);
+    if (interval > 1) {
+      return interval + " months";
+    }
+    interval = Math.floor(seconds / 86400);
+    if (interval > 1) {
+      return interval + " days";
+    }
+    interval = Math.floor(seconds / 3600);
+    if (interval > 1) {
+      return interval + " hours";
+    }
+    interval = Math.floor(seconds / 60);
+    if (interval > 1) {
+      return interval + " minutes";
+    }
+    return Math.floor(seconds) + " seconds";
+  }
+
 app.listen(process.env.PORT || 8000, process.env.IP);

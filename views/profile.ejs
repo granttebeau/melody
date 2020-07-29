@@ -8,7 +8,7 @@
             <a href="/logout">Log out</a>
         </div>
         <div class="col-6">
-            <form action="/new-post" method="POST">
+            <form action="/new-post/profile" method="POST">
                 <div class="form-group">
                     <input class="form-control" type="text" placeholder="What song's on your mind?" name="content" required>
                 </div>
@@ -16,20 +16,29 @@
                     <input class="form-control" type="text" placeholder="Song link" name="song" required>
                 </div>
                 <div class="form-group">
-                    <input type="submit" class="btn btn-primary btn-block">
+                    <input type="submit" value="Post" class="btn btn-primary btn-block">
                 </div>
             </form>
-            <ul>
+            <% if (posts.length == 0) { %>
+                <h4 class="text-center my-5">No posts yet...</h4>
+            <% } %>
+            <ul class="posts">
                 <% posts.reverse().forEach(post => {%>
-                    <li>
-                        <p>@<%=user.username %></p>
-                        <p><%= post.content %></p>
+                    <li class="post">
+                        <p class="lead">@<a href="/profile"><%=post.author.username %></a> <p class="date"><%=post.date%></p> </p>
+                        <p class="lead"><span class="post-content"><%= post.content %></span></p>
                         <iframe style="position: relative; z-index: 2;" src="<%= post.song %>" width="300" height="80" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe>
-                        <p><%=post.date%></p>
+                        <% if (post.author.id.equals(user._id)) { %>
+                            <a href="/delete-post/<%= post._id %>/profile">Delete</a>
+                        <% } %>
                     </li>
                 <% })%>
             </ul>
         </div>
     </div>
 </div>
+
+<script>
+    document.querySelector("date").textContent
+</script>
 <%- include("partials/footer") %>
