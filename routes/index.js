@@ -28,10 +28,14 @@ router.get('/register/:id', function(req, res) {
 })
 
 router.post("/register", function(req, res) {
+    console.log(req.params)
     var username = req.body.username
     var password = req.body.password
     var fullName = req.body.fullName
 
+    console.log(username)
+    console.log(password)
+    console.log(fullName)
 
     User.register(new User({username: username, fullName: fullName}), password, function(err, user) {
         if (err) {
@@ -47,7 +51,7 @@ router.post("/register", function(req, res) {
 router.post('/register/:id', upload.single('image'), function(req, res) {
     var image = req.file
     var bio = req.body.bio
-    User.findById(req.params.id, function(err, user) {
+    User.findById(req.params.id, function(err, user) {2
         if (err) {
             return res.redirect("/register")
         }

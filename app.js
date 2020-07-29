@@ -7,12 +7,12 @@ var express = require("express"),
     mongoose = require("mongoose"),
     passport = require("passport"),
     LocalStrategy = require("passport-local"),
-    fs = require("fs"),
+    path = require("path"),
     multer = require("multer"),
-    upload = multer({ dest: "uploads/" }),
-    path = require("path")
+    upload = multer({ dest: "uploads/" })
 
-var User = require("./models/user")
+var User = require("./models/user"),
+    Post = require("./models/post")
 
 var IndexRoutes = require("./routes/index")
 
@@ -20,7 +20,11 @@ var IndexRoutes = require("./routes/index")
 var url = process.env.DATABASEURL || "mongodb://localhost/melody"
 mongoose.connect(url, { useUnifiedTopology: true, useNewUrlParser: true })
 app.set("view engine", "ejs")
+
+app.use(bp.json())
 app.use(bp.urlencoded({extended: true}))
+
+
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(methodOverride("_method"))
 
@@ -62,15 +66,35 @@ app.get('/profile/picture', function(req,res,next) {
     });
   });
 
-  
-
 app.get("/profile", isLoggedIn, function(req, res) {
-    res.render("profile")
+    Post.find({'author.username': req.user.username}, function(err, posts) {
+        if (err) {
+            return res.redirect("/profile")
+        }
+        res.render("profile", {posts: posts})
+    })
 })
 
 app.get("/profile/notifications", function(req, res) {
     res.send("notifications")
 })
+
+app.post("/new-post", function(req, res) {
+    var content = req.body.content
+    var song = req.body.song
+    var post = new Post({
+        content: content,
+        song: song,
+        date: Date.now(),
+        author: {
+            id: req.user._id,
+            username: req.user.username
+        }
+    })
+    post.save()
+    res.redirect("/profile")
+})
+
 
 app.use(IndexRoutes)
 
@@ -88,4 +112,4 @@ function isNotLoggedIn(req, res, next) {
     }
     next()
 }
-app.listen(process.env.PORT || 3000, process.env.IP);
+app.listen(process.env.PORT || 8000, process.env.IP);

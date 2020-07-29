@@ -13,6 +13,16 @@ html, body {
     color: #f1935c !important; 
 }
 
+.btn-primary {
+    background-color: #f1935c;
+    border: none;
+}
+
+.btn-primary:hover {
+    background-color: #dc6622;
+    transition: .5s;
+}
+
 .navbar-light {
     background-color: #fcf8e8 !important;
 }
