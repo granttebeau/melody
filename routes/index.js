@@ -18,25 +18,45 @@ router.get('/register', function(req, res) {
     res.render("landing/landing-register")
 })
 
-router.post("/register", upload.single('image'), function(req, res) {
+router.get('/register/:id', function(req, res) {
+    User.findById(req.params.id, function(err, user) {
+        if (err) {
+            return res.redirect("/register")
+        }
+        res.render("landing/add-information", {user: user})
+    })
+})
+
+router.post("/register", function(req, res) {
     var username = req.body.username
     var password = req.body.password
-    var bio = req.body.bio
     var fullName = req.body.fullName
-    var image = req.file
 
 
-    User.register(new User({username: username, bio: bio, fullName: fullName, image: image}), password, function(err, user) {
+    User.register(new User({username: username, fullName: fullName}), password, function(err, user) {
         if (err) {
             console.log(err)
             return res.render('landing/landing-register')
         }
+        passport.authenticate("local")(req, res, function() {
+            res.redirect('/register/' + user._id)
+        })
+    })
+})
+
+router.post('/register/:id', upload.single('image'), function(req, res) {
+    var image = req.file
+    var bio = req.body.bio
+    User.findById(req.params.id, function(err, user) {
+        if (err) {
+            return res.redirect("/register")
+        }
+        user.bio = bio
         user.image.data = fs.readFileSync(image.path)
         user.image.contentType = 'image/jpeg'
         user.save()
-        passport.authenticate("local")(req, res, function() {
-            res.redirect('/')
-        })
+        req.logout()
+        res.redirect("/")
     })
 })
 

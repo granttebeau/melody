@@ -1,0 +1,42 @@
+<%- include("../partials/landing-header") %>
+    <div class="image-background m-0" id="image-background">
+        <img src="/images/logo.png" alt="">
+        <h4 class="text-center"><i class="fas fa-music"></i> Share your music, today </h4>
+    </div>
+
+    <div class="landing-info">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-10 col-md-8">
+                    <h1 class="text-left my-3">Hello <%= user.fullName %>!</h1>
+                    <h2 class="text-left my-3">Complete your profile:</h2>
+                    <form action="/register/<%= user._id%>" method="POST" enctype="multipart/form-data" id="infoForm">
+                        <div class="form-group">
+                            <textarea class="form-control" name="bio" form="infoForm" maxlength="60" placeholder="Your bio"></textarea>
+                        </div>
+                        <div class="form-group">
+                                <input type="file" class="form-control inputfile" onchange="loadFile(event)"
+                                id="image" name="image"
+                                accept="image/png, image/jpeg">
+                                <label for="image" class="rounded">Choose a profile picture</label>
+                        </div>
+                        <div class="my-3">
+                            <h5 style="float: left;" class="mb-5 mt-3 mr-3">Selected: </h5>
+                            <img style="width: 100px; margin: 0 0 0 20px; float: left;" id="profile-pic-display" alt="">
+                        </div>
+                        <div class="form-group">
+                            <button class="btn btn-primary btn-block btn-lg">Create account</button>
+                        </div>
+                    </form>
+                </div>
+            
+        
+            </div>
+        </div>
+    </div>
+
+
+    <script src="/js/show-profile-pic.js"></script>
+    
+</body>
+</html>

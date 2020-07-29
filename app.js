@@ -9,7 +9,8 @@ var express = require("express"),
     LocalStrategy = require("passport-local"),
     fs = require("fs"),
     multer = require("multer"),
-    upload = multer({ dest: "uploads/" })
+    upload = multer({ dest: "uploads/" }),
+    path = require("path")
 
 var User = require("./models/user")
 
@@ -20,7 +21,7 @@ var url = process.env.DATABASEURL || "mongodb://localhost/melody"
 mongoose.connect(url, { useUnifiedTopology: true, useNewUrlParser: true })
 app.set("view engine", "ejs")
 app.use(bp.urlencoded({extended: true}))
-app.use(express.static(__dirname + "/public"))
+app.use(express.static(path.join(__dirname, 'public')));
 app.use(methodOverride("_method"))
 
 const store = new MongoDBStore({
@@ -61,6 +62,7 @@ app.get('/profile/picture', function(req,res,next) {
     });
   });
 
+  
 
 app.get("/profile", isLoggedIn, function(req, res) {
     res.render("profile")
