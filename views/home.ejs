@@ -22,7 +22,11 @@
                         <li class="post">
                             <p class="lead">@<a href="/profile"><%=post.author.username %></a> <span class="date" style="font-size: .7em;"><%=post.date%></span> </p>
                             <p class="lead"><span class="post-content"><%= post.content %></span></p>
-                            <iframe style="position: relative; z-index: 2;" src="<%= post.song %>" width="300" height="80" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe>
+                            <div class="spotify-embeds">
+                                <div class="spotify-embed">
+                                    <iframe class="rounded song-tile" src="<%= post.song %>"   frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe>
+                                </div>
+                            </div>
                             <% if (post.author.id.equals(user._id)) { %>
                                 <a href="/delete-post/<%= post._id %>/profile">Delete</a>
                             <% } %>

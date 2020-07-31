@@ -1,11 +1,13 @@
 <%- include("partials/header") %>
 <div class="container mt-5">
     <div class="row justify-content-center">
-        <div class="col-4">
-            <h1> <%= user.fullName %></h1>
+        <div class="col-4 text-center">
+            <div class="profile-pic-container">
+                <img src="/profile/picture" class="rounded-circle profile-pic"> <br>
+            </div>
+            <h1 class="mt-3"> <%= user.fullName %></h1>
             <h3>@<%=user.username%></h3>
-            <p><%= user.bio%></p>
-            <img src="/profile/picture" style="width: 200px;"> <br>
+            <p class="lead"><%= user.bio%></p>
             <a href="/logout">Log out</a>
         </div>
         <div class="col-6">
@@ -26,9 +28,14 @@
             <ul class="posts">
                 <% posts.reverse().forEach(post => {%>
                     <li class="post">
+                        <i style="margin-top: 10px; margin-right: 10px; float: right;" class="dropdown-arrow fas fa-angle-down"></i>
                         <p class="lead">@<a href="/profile"><%=post.author.username %></a> <span class="date" style="font-size: .7em;"><%=post.date%></span> </p>
                         <p class="lead"><span class="post-content"><%= post.content %></span></p>
-                        <iframe style="position: relative; z-index: 2;" src="<%= post.song %>" width="300" height="80" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe>
+                        <div class="spotify-embeds">
+                            <div class="spotify-embed">
+                                <iframe class="rounded song-tile" src="<%= post.song %>"   frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe>
+                            </div>
+                        </div>
                         <% if (post.author.id.equals(user._id)) { %>
                             <a href="/delete-post/<%= post._id %>/profile">Delete</a>
                         <% } %>

@@ -32,3 +32,12 @@ function timeSince(date) {
 
     return time + "yr"
 }
+
+window.addEventListener("resize", function() {
+    document.querySelectorAll('iframe').forEach(song => {
+        console.log(song)
+        song.style.width = song.parentElement.width
+    })
+})
+
+document.querySelectorAll(".dropdown-arrow")
