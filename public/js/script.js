@@ -35,9 +35,16 @@ function timeSince(date) {
 
 window.addEventListener("resize", function() {
     document.querySelectorAll('iframe').forEach(song => {
-        console.log(song)
         song.style.width = song.parentElement.width
     })
 })
 
-document.querySelectorAll(".dropdown-arrow")
+document.querySelectorAll(".post-dropdown-arrow ").forEach(arrow => {
+    arrow.addEventListener("click", function() {
+        arrow.classList.toggle("fa-angle-down")
+        arrow.classList.toggle("fa-angle-up")
+        var parent = arrow.parentElement
+        var dropdown = parent.querySelector("ul")
+        dropdown.classList.toggle("display-none")
+    })
+})
