@@ -3,7 +3,7 @@ var mongoose = require("mongoose")
 var postSchema = new mongoose.Schema({
     content: String,
     song: String,
-    date: Date,
+    date: Number,
     author: {
         id: {
             type: mongoose.Schema.Types.ObjectId,

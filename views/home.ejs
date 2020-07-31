@@ -20,16 +20,11 @@
                 <% posts.reverse().forEach(post => {%>
                     <% if (post.content && post.song)  { %> 
                         <li class="post">
-                            <% if (post.author.id.equals(user._id)) { %>
-                                <p>@<a href="/profile"><%=post.author.username %></a></p>
-                            <% } else { %>
-                                <p>@<a href="/profile/<%= post.author.id %>"><%=post.author.username %></a></p>
-                            <% } %>
-                            <p><%= post.content %></p>
+                            <p class="lead">@<a href="/profile"><%=post.author.username %></a> <span class="date" style="font-size: .7em;"><%=post.date%></span> </p>
+                            <p class="lead"><span class="post-content"><%= post.content %></span></p>
                             <iframe style="position: relative; z-index: 2;" src="<%= post.song %>" width="300" height="80" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe>
-                            <p><%=post.date%></p>
                             <% if (post.author.id.equals(user._id)) { %>
-                                <a href="/delete-post/<%= post._id %>/home">Delete</a>
+                                <a href="/delete-post/<%= post._id %>/profile">Delete</a>
                             <% } %>
                         </li>
                     <% } %>
@@ -38,4 +33,5 @@
         </div>
     </div>
 </div>
+<script src="/js/script.js"></script>
 <%- include("partials/footer") %>

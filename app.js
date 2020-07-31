@@ -119,6 +119,7 @@ app.post("/new-post/profile", function(req, res) {
         }
     })
     post.save()
+    console.log(post)
     res.redirect("/profile")
 })
 
@@ -135,6 +136,7 @@ app.post("/new-post/home", function(req, res) {
         }
     })
     post.save()
+    console.log(post)
     res.redirect("/home")
 })
 
