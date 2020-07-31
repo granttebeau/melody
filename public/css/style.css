@@ -1,10 +1,12 @@
 @import url('https://fonts.googleapis.com/css2?family=Satisfy&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Lato&display=swap');
 
 html, body {
     height: 100%;
     width: 100%;
     color: #30475e;
     margin-top: 50px !important;
+    font-family: 'Lato', sans-serif;
 }
 
 .logo {

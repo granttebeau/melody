@@ -20,7 +20,11 @@
                 <% posts.reverse().forEach(post => {%>
                     <% if (post.content && post.song)  { %> 
                         <li class="post">
-                            <p class="lead">@<a href="/profile"><%=post.author.username %></a> <span class="date" style="font-size: .7em;"><%=post.date%></span> </p>
+                            <% if (post.author.id.equals(user._id)) { %>
+                                <p class="lead">@<a href="/profile"><%=post.author.username %></a> <span class="date" style="font-size: .7em;"><%=post.date%></span> </p>
+                            <% } else { %>
+                                <p class="lead">@<a href="/profile/<%= post.author.id %>"><%=post.author.username %></a> <span class="date" style="font-size: .7em;"><%=post.date%></span> </p>
+                            <% } %>
                             <p class="lead"><span class="post-content"><%= post.content %></span></p>
                             <div class="spotify-embeds">
                                 <div class="spotify-embed">

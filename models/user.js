@@ -6,7 +6,13 @@ var userSchema = new mongoose.Schema({
     password: String,
     fullName: String,
     bio: String,
-    image: { data: Buffer, contentType: String }
+    image: { data: Buffer, contentType: String },
+    following: [{
+        user: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'User'
+        }
+    }]
 })
 
 userSchema.plugin(passportLocalMongoose)

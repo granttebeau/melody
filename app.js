@@ -79,7 +79,36 @@ app.get('/profile/:id/picture', function(req,res,next) {
     });
 });
 
+app.get("/follow/:id", function(req, res) {
+    User.findById(req.user._id, function(err, currentUser) {
+        if (err) {
+            return res.redirect("/profile")
+        }
+        User.findById(req.params.id, function(err, user) {
+            if (err) {
+                return res.redirect("/profile/" + req.params.id)
+            }
+
+            var arr = currentUser.following.filter(function(i) {
+                return i.equals(user)
+            })
+            if (arr.length > 0) {
+                currentUser.following.splice(currentUser.following.indexOf(user), 1);
+            }
+            else {
+                currentUser.following.push(user)
+            }
+            currentUser.save()
+            console.log(currentUser)
+            res.redirect("/profile/" + req.params.id)
+        })
+    })
+})
+
 app.get("/profile", isLoggedIn, function(req, res) {
+    User.findById(req.user._id, function(err, user) {
+        console.log(user)
+    })
     Post.find({'author.username': req.user.username}, function(err, posts) {
         if (err) {
             return res.redirect("/profile")
@@ -93,11 +122,21 @@ app.get("/profile/:id", isLoggedIn, function(req, res) {
         if (err) {
             res.redirect("/home")
         }
-        Post.find({'author.username': user.username}, function(err, posts) {
+        User.findById(req.user._id, function(err, currentUser) {
             if (err) {
                 res.redirect("/home")
             }
-            res.render("other-profile", {posts: posts, profile: user})
+            var arr = currentUser.following.filter(function(i) {
+                return i.equals(user)
+            })
+            let f
+            arr.length > 0 ? f = true : f = false
+            Post.find({'author.username': user.username}, function(err, posts) {
+                if (err) {
+                    res.redirect("/home")
+                }
+                res.render("other-profile", {posts: posts, profile: user, f: f})
+            })
         })
     })
 })
@@ -169,40 +208,11 @@ function isLoggedIn(req, res, next) {
     }
     res.redirect("/")
 }
-
-function isNotLoggedIn(req, res, next) {
-    if (req.isAuthenticated()) {
-        return res.redirect("/profile");
-    }
-    next()
+function containsId(following, id) {
+    var followers = following.filter(user => {
+        user._id.equals(id)
+    })
+    return followers.length > 1
 }
-
-function timeSince(date) {
-
-    var seconds = Math.floor((new Date() - date) / 1000);
-  
-    var interval = Math.floor(seconds / 31536000);
-  
-    if (interval > 1) {
-      return interval + " years";
-    }
-    interval = Math.floor(seconds / 2592000);
-    if (interval > 1) {
-      return interval + " months";
-    }
-    interval = Math.floor(seconds / 86400);
-    if (interval > 1) {
-      return interval + " days";
-    }
-    interval = Math.floor(seconds / 3600);
-    if (interval > 1) {
-      return interval + " hours";
-    }
-    interval = Math.floor(seconds / 60);
-    if (interval > 1) {
-      return interval + " minutes";
-    }
-    return Math.floor(seconds) + " seconds";
-  }
 
 app.listen(process.env.PORT || 8000, process.env.IP);

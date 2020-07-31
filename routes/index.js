@@ -37,7 +37,7 @@ router.post("/register", function(req, res) {
     console.log(password)
     console.log(fullName)
 
-    User.register(new User({username: username, fullName: fullName}), password, function(err, user) {
+    User.register(new User({username: username, fullName: fullName, following: []}), password, function(err, user) {
         if (err) {
             console.log(err)
             return res.render('landing/landing-register')
