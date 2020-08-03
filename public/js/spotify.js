@@ -93,7 +93,9 @@ document.querySelector(".post-form").addEventListener("submit", function() {
     returnToPreviousPage()
     return false
   }
-  return true
+  else {
+    return true
+  }
 })
 
 listSongs.forEach(song => {

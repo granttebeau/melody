@@ -83,36 +83,6 @@ app.get('/profile/:id/picture', function(req,res,next) {
 });
 
 
-app.get("/spotify", function(req, res) {
-    const options = {
-        headers: {
-            'Content-Type':'application/x-www-form-urlencoded',
-            'Authorization': 'Basic ZjEyMDdhYjNhODcwNDk5MmIyMjZiMTI1ODdhYTdjMDI6NGY3YWMxMWI1NTk5NDFiNmExZmMxMTI4MWQ4NDljZTA',}
-      };
-    axios.post('https://accounts.spotify.com/api/token', 'grant_type=client_credentials', options).then((response) => {
-       
-        var at = response.data.access_token
-        var op = {
-            headers: {
-                'Content-Type':'application/x-www-form-urlencoded',
-                'Authorization': 'Bearer ' + at,}
-          };
-        axios.get("https://api.spotify.com/v1/search?q=this+will+be&type=track", op).then((response) => {
-                console.log(response.data.tracks.items[0])
-        var len = response.data.tracks.items.length
-            res.send(String(len))
-        }).catch(function (error) {
-            console.log(error.response)
-        })
-
-
-    }).catch(function (error) {
-        
-      })
-    
-})
-
-
 app.get("/follow/:id", function(req, res) {
     User.findById(req.user._id, function(err, currentUser) {
         if (err) {
@@ -199,13 +169,12 @@ app.post("/new-post/profile", function(req, res) {
         }
     })
     post.save()
-    console.log(post)
     res.redirect("/profile")
 })
 
 app.post("/new-post/home", function(req, res) {
     var content = req.body.content
-    var song = req.body.song
+    var song = req.body.songlink
     var post = new Post({
         content: content,
         song: song,
@@ -216,7 +185,6 @@ app.post("/new-post/home", function(req, res) {
         }
     })
     post.save()
-    console.log(post)
     res.redirect("/home")
 })
 

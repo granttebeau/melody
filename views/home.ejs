@@ -5,13 +5,23 @@
             <h1>Home screen</h1>
         </div>
         <div class="col-6">
-            <form action="/new-post/home" method="POST">
+            <form action="/new-post/home" method="POST" class="post-form">
                 <div class="form-group">
                     <input class="form-control" type="text" placeholder="What song's on your mind?" name="content" required>
                 </div>
                 <div class="form-group">
-                    <input class="form-control" type="text" placeholder="Song link" name="song" required>
+                    <input class="form-control song" autocomplete="off" placeholder="Search for your song" name="song" required list="songs-list">
+                    <ul class="song-display-items display-none">
+                        <li class="first"></li>
+                        <li class="second"></li>
+                        <li class="third"></li>
+                        <li class="fourth"></li>
+                        <li class="fifth"></li>
+                    </ul>
+
                 </div>
+                <input type="hidden" name="songlink" required>
+                <p class="lead error-message display-none">Must select a song from the dropdown menu</p>
                 <div class="form-group">
                     <input type="submit" value="Post" class="btn btn-primary btn-block">
                 </div>
@@ -25,7 +35,7 @@
                                 <ul class="post-dropdown-arrow-list display-none rounded">
                                     <% if (post.author.id.equals(user._id)) { %>
                                         <a href="#"><li>Edit post</li></a>
-                                        <a href="/delete-post/<%= post._id %>/profile"><li>Delete post</li></a>
+                                        <a href="/delete-post/<%= post._id %>/home"><li>Delete post</li></a>
                                     <% } %>
                                     <a href="#"><li>Share</li></a>
                                 </ul>
@@ -41,9 +51,6 @@
                                     <iframe class="rounded song-tile" src="<%= post.song %>"   frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe>
                                 </div>
                             </div>
-                            <% if (post.author.id.equals(user._id)) { %>
-                                <a href="/delete-post/<%= post._id %>/profile">Delete</a>
-                            <% } %>
                         </li>
                     <% } %>
                 <% })%>
@@ -52,4 +59,6 @@
     </div>
 </div>
 <script src="/js/script.js"></script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script type="module" src="/js/spotify.js"></script>
 <%- include("partials/footer") %>
