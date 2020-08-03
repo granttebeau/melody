@@ -30,7 +30,11 @@ html, body {
 
 .posts {
     list-style: none;
-    padding: 0;
+    padding: 0 0 25px 0;
+}
+
+.song-display-items {
+    list-style: none;
 }
 
 .post {

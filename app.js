@@ -9,7 +9,9 @@ var express = require("express"),
     LocalStrategy = require("passport-local"),
     path = require("path"),
     multer = require("multer"),
-    upload = multer({ dest: "uploads/" })
+    upload = multer({ dest: "uploads/" }),
+    axios = require("axios"),
+    querystring = require("querystring")
 
 var User = require("./models/user"),
     Post = require("./models/post")
@@ -27,6 +29,7 @@ app.use(bp.urlencoded({extended: true}))
 
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(methodOverride("_method"))
+
 
 const store = new MongoDBStore({
     uri: "mongodb://localhost/melody",
@@ -79,6 +82,37 @@ app.get('/profile/:id/picture', function(req,res,next) {
     });
 });
 
+
+app.get("/spotify", function(req, res) {
+    const options = {
+        headers: {
+            'Content-Type':'application/x-www-form-urlencoded',
+            'Authorization': 'Basic ZjEyMDdhYjNhODcwNDk5MmIyMjZiMTI1ODdhYTdjMDI6NGY3YWMxMWI1NTk5NDFiNmExZmMxMTI4MWQ4NDljZTA',}
+      };
+    axios.post('https://accounts.spotify.com/api/token', 'grant_type=client_credentials', options).then((response) => {
+       
+        var at = response.data.access_token
+        var op = {
+            headers: {
+                'Content-Type':'application/x-www-form-urlencoded',
+                'Authorization': 'Bearer ' + at,}
+          };
+        axios.get("https://api.spotify.com/v1/search?q=this+will+be&type=track", op).then((response) => {
+                console.log(response.data.tracks.items[0])
+        var len = response.data.tracks.items.length
+            res.send(String(len))
+        }).catch(function (error) {
+            console.log(error.response)
+        })
+
+
+    }).catch(function (error) {
+        
+      })
+    
+})
+
+
 app.get("/follow/:id", function(req, res) {
     User.findById(req.user._id, function(err, currentUser) {
         if (err) {
@@ -88,27 +122,34 @@ app.get("/follow/:id", function(req, res) {
             if (err) {
                 return res.redirect("/profile/" + req.params.id)
             }
-
-            var arr = currentUser.following.filter(function(i) {
+ 
+            var curUserArr = currentUser.following.filter(function(i) {
                 return i.equals(user)
             })
-            if (arr.length > 0) {
+            if (curUserArr.length > 0) {
                 currentUser.following.splice(currentUser.following.indexOf(user), 1);
             }
             else {
                 currentUser.following.push(user)
             }
+
+            var userArr = user.followers.filter(function(i) {
+                return i.equals(currentUser)
+            })
+            if (userArr.length > 0) {
+                user.followers.splice(user.followers.indexOf(currentUser), 1);
+            }
+            else {
+                user.followers.push(currentUser)
+            }
             currentUser.save()
-            console.log(currentUser)
+            user.save()
             res.redirect("/profile/" + req.params.id)
         })
     })
 })
 
 app.get("/profile", isLoggedIn, function(req, res) {
-    User.findById(req.user._id, function(err, user) {
-        console.log(user)
-    })
     Post.find({'author.username': req.user.username}, function(err, posts) {
         if (err) {
             return res.redirect("/profile")
@@ -147,7 +188,7 @@ app.get("/profile/notifications", function(req, res) {
 
 app.post("/new-post/profile", function(req, res) {
     var content = req.body.content
-    var song = req.body.song
+    var song = req.body.songlink
     var post = new Post({
         content: content,
         song: song,
