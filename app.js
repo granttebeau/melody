@@ -156,20 +156,64 @@ app.get("/profile/notifications", function(req, res) {
     res.send("notifications")
 })
 
-app.post("/new-post/profile", function(req, res) {
+app.post("/new-post", function(req, res) {
     var content = req.body.content
-    var song = req.body.songlink
-    var post = new Post({
-        content: content,
-        song: song,
-        date: Date.now(),
-        author: {
-            id: req.user._id,
-            username: req.user.username
-        }
-    })
-    post.save()
-    res.redirect("/profile")
+    var song = req.body.song
+    let songLink = req.body.songlink
+    if (songLink === "") {
+        const options = {
+            headers: {
+                'Content-Type':'application/x-www-form-urlencoded',
+                'Authorization': 'Basic ZjEyMDdhYjNhODcwNDk5MmIyMjZiMTI1ODdhYTdjMDI6NGY3YWMxMWI1NTk5NDFiNmExZmMxMTI4MWQ4NDljZTA',}
+          };
+        axios.post('https://accounts.spotify.com/api/token', 'grant_type=client_credentials', options).then((response) => {
+ 
+            var at = response.data.access_token
+            var op = {
+                headers: {
+                    'Content-Type':'application/x-www-form-urlencoded',
+                    'Authorization': 'Bearer ' + at,}
+                };
+            
+        
+            var qs = createQueryString(song)
+            axios.get("https://api.spotify.com/v1/search" + qs, op).then((response) => {
+                songLink = "https://open.spotify.com/embed/track/" + response.data.tracks.items[0].id
+                var post = new Post({
+                    content: content,
+                    song: songLink,
+                    date: Date.now(),
+                    author: {
+                        id: req.user._id,
+                        username: req.user.username
+                    }
+                })
+                post.save()
+                res.redirect(req.get('referer'));
+            }).catch(function (error) {
+                console.log(error)
+                return
+            })
+            }).catch(function (error) {
+                console.log(error)
+                return
+        })
+
+    }
+    else {
+        var post = new Post({
+            content: content,
+            song: songLink,
+            date: Date.now(),
+            author: {
+                id: req.user._id,
+                username: req.user.username
+            }
+        })
+        post.save()
+        res.redirect(req.get('referer'));
+    }
+
 })
 
 app.post("/new-post/home", function(req, res) {
@@ -188,24 +232,16 @@ app.post("/new-post/home", function(req, res) {
     res.redirect("/home")
 })
 
-app.get("/delete-post/:id/profile", function(req, res) {
+app.get("/delete-post/:id", function(req, res) {
     Post.findByIdAndDelete(req.params.id, function(err) {
         if (err) {
             console.log(err)
             return res.redirect("/profile")
         }
-        res.redirect("/profile")
+        res.redirect(req.get('referer'));
     })
 })
-app.get("/delete-post/:id/home", function(req, res) {
-    Post.findByIdAndDelete(req.params.id, function(err) {
-        if (err) {
-            console.log(err)
-            return res.redirect("/home")
-        }
-        res.redirect("/home")
-    })
-})
+
 
 
 app.use(IndexRoutes)
@@ -217,11 +253,28 @@ function isLoggedIn(req, res, next) {
     }
     res.redirect("/")
 }
-function containsId(following, id) {
-    var followers = following.filter(user => {
-        user._id.equals(id)
-    })
-    return followers.length > 1
-}
+function createQueryString(song) {
+    var songArr = song.split("")
+    var str = ""
+    if (song.length == 0) {
+      return ""
+    }
+    songArr.forEach(letter => {
+      if (letter === " ") {
+        str += "+"
+      }
+      else if (letter === '"') {
+        str += "%22"
+      }
+      else if (letter === "'") {
+        str += "%27"
+      }
+      else {
+        str += letter
+      }
+    });
+    return "?q=" + str + "&type=track"
+  }
+  
 
 app.listen(process.env.PORT || 8000, process.env.IP);

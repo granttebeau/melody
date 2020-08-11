@@ -13,8 +13,6 @@ var fourth = document.querySelector(".fourth")
 var fifth = document.querySelector(".fifth")
 var listSongs = [first, second, third, fourth, fifth]
 var songLink = document.querySelector("input[type='hidden']")
-var clicked = false
-
 
 
 song.addEventListener("input", function() {
@@ -41,35 +39,25 @@ song.addEventListener("input", function() {
           first.textContent = response.data.tracks.items[0].name + ", " + response.data.tracks.items[0].artists[0].name
           first.addEventListener("click", function() {
             songLink.value = "https://open.spotify.com/embed/track/" + response.data.tracks.items[0].id
-            console.log(songLink.value)
-            clicked = true
           })
 
           second.textContent = response.data.tracks.items[1].name + ", " + response.data.tracks.items[1].artists[0].name
           second.addEventListener("click", function() {
             songLink.value = "https://open.spotify.com/embed/track/" + response.data.tracks.items[1].id
-            console.log(songLink.value)
-            clicked = true
           })
 
           third.textContent = response.data.tracks.items[2].name + ", " + response.data.tracks.items[2].artists[0].name
           third.addEventListener("click", function() {
             songLink.value = "https://open.spotify.com/embed/track/" + response.data.tracks.items[2].id
-            console.log(songLink.value)
-            clicked = true
           })
 
           fourth.textContent = response.data.tracks.items[3].name + ", " + response.data.tracks.items[3].artists[0].name
           fourth.addEventListener("click", function() {
             songLink.value = "https://open.spotify.com/embed/track/" + response.data.tracks.items[3].id
-            console.log(songLink.value)
-            clicked = true
           })
           fifth.textContent = response.data.tracks.items[4].name + ", " + response.data.tracks.items[4].artists[0].name
           fifth.addEventListener("click", function() {
             songLink.value = "https://open.spotify.com/embed/track/" + response.data.tracks.items[4].id
-            console.log(songLink.value)
-            clicked = true
           })
         }
     }).catch(function (error) {
@@ -88,15 +76,6 @@ function changeValue(element) {
 }
 
 
-document.querySelector(".post-form").addEventListener("submit", function() {
-  if (!clicked) {
-    returnToPreviousPage()
-    return false
-  }
-  else {
-    return true
-  }
-})
 
 listSongs.forEach(song => {
   song.addEventListener("click", function() {

@@ -35,6 +35,25 @@ html, body {
 
 .song-display-items {
     list-style: none;
+    background: white;
+    border: 1px solid black;
+    border-top: none !important;
+    padding-inline-start: 0 !important;
+}
+
+.song-display-items li {
+    padding: 5px 0 5px 25px;
+    border-top: 1px #dddddd solid;
+    cursor: pointer; 
+    border-bottom: 1px #dddddd solid;
+}
+.song-display-items li:hover {
+    background: #dddddd
+}
+
+input:disabled {
+    background: #f1935c !important;
+    opacity: 1 !important;
 }
 
 .post {
@@ -145,6 +164,8 @@ li.nav-item:hover .underline {
 	background-color: #30475e;
 	width: 100%;
 }
+
+
 
 @media (max-width: 768px) {
     ul.navbar-nav{
