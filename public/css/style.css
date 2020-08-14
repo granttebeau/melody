@@ -51,11 +51,6 @@ html, body {
     background: #dddddd
 }
 
-input:disabled {
-    background: #f1935c !important;
-    opacity: 1 !important;
-}
-
 .post {
     background-color: #fcf8e8;
     border-radius: 25px;
@@ -83,7 +78,6 @@ input:disabled {
     height: 100%; 
     position: absolute;
 }
-
 
 .profile-pic-container {
     width: 240px;
