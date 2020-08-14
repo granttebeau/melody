@@ -2,6 +2,3 @@
 
 # dependencies
 /node_modules
-
-# contains spotify api tokens/key
-/public/js/spotify.js
