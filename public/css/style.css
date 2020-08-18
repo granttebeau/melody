@@ -15,6 +15,10 @@ html, body {
     color: #f1935c !important; 
 }
 
+.home-screen-content {
+    position: fixed;
+}
+
 .profile {
     position: fixed;
 }
@@ -139,7 +143,8 @@ html, body {
 }
 
 .navbar-nav li {
-    margin: 0 20px;
+    margin: 0 15px;
+    display: inline-block !important;
 }
 
 .underline {
@@ -159,12 +164,11 @@ li.nav-item:hover .underline {
 	width: 100%;
 }
 
-
+ul.navbar-nav{
+    display: inline !important;
+}
 
 @media (max-width: 768px) {
-    ul.navbar-nav{
-        display: inline;
-    }
     .navbar-right {
         margin-left: 0 !important;
     }

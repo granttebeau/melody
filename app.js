@@ -62,10 +62,8 @@ app.get("/home", isLoggedIn, function(req, res) {
         if (err) return next(err);
         var following = user.following.map(item => item.username)
         following.push(user.username)
-        console.log(following)
         Post.find({"author.username": {$in : following}}, function(err, posts) {
             if (err) console.log(err);
-            console.log(posts)
             res.render("home", {posts: posts})
         })
     })
@@ -136,12 +134,6 @@ app.get("/follow/:id", function(req, res) {
 })
 
 app.get("/profile", isLoggedIn, function(req, res) {
-    User.find({username: 'granttebeau'}, function(err, user) {
-        if (err) {
-            console.log(err)
-        }
-        console.log(user[0].following)
-    })
     Post.find({'author.username': req.user.username}, function(err, posts) {
         if (err) {
             return res.redirect("/profile")
@@ -153,28 +145,33 @@ app.get("/profile", isLoggedIn, function(req, res) {
 app.get("/profile/:id", isLoggedIn, function(req, res) {
     User.findById(req.params.id, function(err, user) {
         if (err) {
+            console.log("FIRST" + err)
+            return res.redirect("/home")
+        }
+        if (user) {
+            User.findById(req.user._id, function(err, currentUser) {
+                if (err) {
+                    console.log("SECOND")
+                    return res.redirect("/home")
+                }
+                var arr = currentUser.following.filter(function(i) {
+                    return i.user.equals(user._id)
+                })
+                let f = arr.length > 0 
+                // console.log(currentUser.following)
+                Post.find({'author.username': user.username}, function(err, posts) {
+                    if (err) {
+                        console.log("THIRD")
+                        return res.redirect("/home")
+                    }
+                    res.render("other-profile", {posts: posts, profile: user, f: f})
+                })
+            })
+        } 
+        else {
             res.redirect("/home")
         }
-        User.findById(req.user._id, function(err, currentUser) {
-            if (err) {
-                res.redirect("/home")
-            }
-            var arr = currentUser.following.filter(function(i) {
-                return i.user.equals(user._id)
-            })
-            console.log(arr)
-            
-            let f = arr.length > 0 
-            // console.log(arr)
-            console.log(user.followers)
-            console.log(currentUser.following)
-            Post.find({'author.username': user.username}, function(err, posts) {
-                if (err) {
-                    res.redirect("/home")
-                }
-                res.render("other-profile", {posts: posts, profile: user, f: f})
-            })
-        })
+        
     })
 })
 
