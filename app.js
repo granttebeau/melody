@@ -58,16 +58,28 @@ app.use(function(req, res, next){
  });
 
 app.get("/home", isLoggedIn, function(req, res) {
-    Post.find({}, function(err, posts) {
-        if (err) {
-            return res.redirect("/home")
-        }
-        res.render("home", {posts: posts})
+    User.findById(req.user._id, function(err, user) {
+        if (err) return next(err);
+        var following = user.following.map(item => item.username)
+        following.push(user.username)
+        console.log(following)
+        Post.find({"author.username": {$in : following}}, function(err, posts) {
+            if (err) console.log(err);
+            console.log(posts)
+            res.render("home", {posts: posts})
+        })
     })
+    // Post.find({}, function(err, posts) {
+    //     if (err) {
+    //         return res.redirect("/home")
+    //     }
+    //     res.render("home", {posts: posts})
+    // })
 })
 
+
 app.get('/profile/picture', function(req,res,next) {
-    User.findById( req.user._id, function(err,user) {
+    User.findById(req.user._id, function(err,user) {
         if (err) return next(err);
         res.contentType(user.image.contentType);
         res.send(user.image.data);
@@ -92,19 +104,23 @@ app.get("/follow/:id", function(req, res) {
             if (err) {
                 return res.redirect("/profile/" + req.params.id)
             }
- 
             var curUserArr = currentUser.following.filter(function(i) {
-                return i.equals(user)
+                return i.user.equals(user._id)
             })
+
+            var newUserObj = {
+                user: user,
+                username: user.username
+            }
             if (curUserArr.length > 0) {
-                currentUser.following.splice(currentUser.following.indexOf(user), 1);
+                currentUser.following.splice(currentUser.following.indexOf(newUserObj), 1);
             }
             else {
-                currentUser.following.push(user)
+                currentUser.following.push(newUserObj)
             }
 
             var userArr = user.followers.filter(function(i) {
-                return i.equals(currentUser)
+                return i._id.equals(currentUser._id)
             })
             if (userArr.length > 0) {
                 user.followers.splice(user.followers.indexOf(currentUser), 1);
@@ -120,6 +136,12 @@ app.get("/follow/:id", function(req, res) {
 })
 
 app.get("/profile", isLoggedIn, function(req, res) {
+    User.find({username: 'granttebeau'}, function(err, user) {
+        if (err) {
+            console.log(err)
+        }
+        console.log(user[0].following)
+    })
     Post.find({'author.username': req.user.username}, function(err, posts) {
         if (err) {
             return res.redirect("/profile")
@@ -138,10 +160,14 @@ app.get("/profile/:id", isLoggedIn, function(req, res) {
                 res.redirect("/home")
             }
             var arr = currentUser.following.filter(function(i) {
-                return i.equals(user)
+                return i.user.equals(user._id)
             })
-            let f
-            arr.length > 0 ? f = true : f = false
+            console.log(arr)
+            
+            let f = arr.length > 0 
+            // console.log(arr)
+            console.log(user.followers)
+            console.log(currentUser.following)
             Post.find({'author.username': user.username}, function(err, posts) {
                 if (err) {
                     res.redirect("/home")

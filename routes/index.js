@@ -33,10 +33,6 @@ router.post("/register", function(req, res) {
     var password = req.body.password
     var fullName = req.body.fullName
 
-    console.log(username)
-    console.log(password)
-    console.log(fullName)
-
     User.register(new User({username: username, fullName: fullName, following: []}), password, function(err, user) {
         if (err) {
             console.log(err)

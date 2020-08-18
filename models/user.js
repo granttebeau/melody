@@ -11,7 +11,8 @@ var userSchema = new mongoose.Schema({
         user: {
             type: mongoose.Schema.Types.ObjectId,
             ref: 'User'
-        }
+        },
+        username: String
     }],
     followers: [{
         user: {
