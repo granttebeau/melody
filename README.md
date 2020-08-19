@@ -1,6 +1,6 @@
 # Melody
 
-<img src="./public/images/logo.png">
+<img src="./public/images/logo.png" style="margin: 0 auto; width: 50%;">
 
 A music-based social media app built using the Spotify API. See what your friends are listening to, post your favorite songs from your favorite artists, and find new music today!
 
