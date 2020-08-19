@@ -4,6 +4,8 @@
 
 A music-based social media app built using the Spotify API. See what your friends are listening to, post your favorite songs from your favorite artists, and find new music today!
 
+Still currently in development.
+
 ## Motivation
 
 I felt like it was somewhat of a taboo to post music on your Instagram/Snap story, but I wanted a way to both post my music and find new songs to listen to. Thus, Melody was created. 
