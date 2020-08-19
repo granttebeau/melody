@@ -24,7 +24,6 @@
     "passport-local-mongoose": "^6.0.1",
     "querystring": "^0.2.0",
     "request": "^2.88.2",
-    "spotify-api.js": "^2.8.3",
     "url": "^0.11.0"
   }
 }
