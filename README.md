@@ -13,7 +13,7 @@ I felt like it was somewhat of a taboo to post music on your Instagram/Snap stor
 
 ## Installation
 
-Clone the application and run ``` npm install ``` in the project directory. To start the application, run ``` npm start ```, and go to [http://localhost:8000](http://localhost:8000/). The app is connected to a Mongo database, so feel free to sign up and test the app out!
+Clone the application and run ``` npm install ``` in the project directory. To start the application, run ``` node app.js ```, and go to [http://localhost:8000](http://localhost:8000/). The app is connected to a Mongo database, so feel free to sign up and test the app out!
 
 ## How to Use
 
