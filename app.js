@@ -18,8 +18,8 @@ var User = require("./models/user"),
 
 var IndexRoutes = require("./routes/index")
 
-
-var url = process.env.DATABASEURL || "mongodb://localhost/melody"
+// var url = "mongodb://localhost/melody"
+var url = "mongodb+srv://public:0vRokIdC25tC532f@melody.1dhd4.mongodb.net/Melody?retryWrites=true&w=majority"
 mongoose.connect(url, { useUnifiedTopology: true, useNewUrlParser: true })
 app.set("view engine", "ejs")
 
@@ -32,7 +32,8 @@ app.use(methodOverride("_method"))
 
 
 const store = new MongoDBStore({
-    uri: "mongodb://localhost/melody",
+    // uri: "mongodb://localhost/melody",
+    uri: "mongodb+srv://public:0vRokIdC25tC532f@melody.1dhd4.mongodb.net/Melody?retryWrites=true&w=majority",
     collection: 'users'
 });
 app.use(session({
