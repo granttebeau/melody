@@ -9,17 +9,15 @@ var express = require("express"),
     LocalStrategy = require("passport-local"),
     path = require("path"),
     multer = require("multer"),
-    upload = multer({ dest: "uploads/" }),
-    axios = require("axios"),
-    querystring = require("querystring")
+    axios = require("axios")
 
 var User = require("./models/user"),
     Post = require("./models/post")
 
 var IndexRoutes = require("./routes/index")
 
-// var url = "mongodb://localhost/melody"
-var url = "mongodb+srv://public:0vRokIdC25tC532f@melody.1dhd4.mongodb.net/Melody?retryWrites=true&w=majority"
+var url = "mongodb://localhost/melody"
+// var url = "mongodb+srv://public:0vRokIdC25tC532f@melody.1dhd4.mongodb.net/Melody?retryWrites=true&w=majority"
 mongoose.connect(url, { useUnifiedTopology: true, useNewUrlParser: true })
 app.set("view engine", "ejs")
 
@@ -32,8 +30,8 @@ app.use(methodOverride("_method"))
 
 
 const store = new MongoDBStore({
-    // uri: "mongodb://localhost/melody",
-    uri: "mongodb+srv://public:0vRokIdC25tC532f@melody.1dhd4.mongodb.net/Melody?retryWrites=true&w=majority",
+    uri: "mongodb://localhost/melody",
+    // uri: "mongodb+srv://public:0vRokIdC25tC532f@melody.1dhd4.mongodb.net/Melody?retryWrites=true&w=majority",
     collection: 'users'
 });
 app.use(session({
@@ -76,6 +74,22 @@ app.get("/home", isLoggedIn, function(req, res) {
     // })
 })
 
+app.post('/search', async function(req, res, next) {
+    var text = req.body.text
+    User.find({'username':  { $regex: text, $options: "i" }}, function(err, users) {
+        if (err) return next(err);
+        var content = {
+            users: users,
+            id: req.user._id
+        }
+        res.send(content)
+    })
+})
+
+app.get("/search", function(req, res, next) {
+    res.render("search")
+})
+
 
 app.get('/profile/picture', function(req,res,next) {
     User.findById(req.user._id, function(err,user) {
@@ -92,7 +106,6 @@ app.get('/profile/:id/picture', function(req,res,next) {
         res.send(user.image.data);
     });
 });
-
 
 app.get("/follow/:id", function(req, res) {
     User.findById(req.user._id, function(err, currentUser) {
