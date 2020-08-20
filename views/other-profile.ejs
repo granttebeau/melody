@@ -1,7 +1,7 @@
 <%- include("partials/header") %>
 <div class="container mt-5">
     <div class="row justify-content-center">
-        <div class="col-4 text-center p-3">
+        <div class="col-12 col-lg-4 text-center p-3">
             <div id="profile" class="profile">
                 <div class="profile-pic-container">
                     <img src="/profile/<%= profile._id %>/picture" class="rounded-circle profile-pic"> <br>
@@ -18,33 +18,11 @@
                 <% }%>
             </div>
         </div>
-        <div class="col-6">
+        <div class="col-12 col-lg-6">
             <% if (posts.length == 0) { %>
                 <h4 class="text-center my-5">No posts yet...</h4>
             <% } %>
-            <ul class="posts">
-                <% posts.reverse().forEach(post => {%>
-                    <li class="post">
-                        <div class="post-dropdown">
-                            <i  class="post-dropdown-arrow fas fa-angle-down"></i>
-                            <ul class="post-dropdown-arrow-list display-none rounded">
-                                <% if (post.author.id.equals(user._id)) { %>
-                                    <a href="#"><li>Edit post</li></a>
-                                    <a href="/delete-post/<%= post._id %>/profile"><li>Delete post</li></a>
-                                <% } %>
-                                <a href="#"><li>Share</li></a>
-                            </ul>
-                        </div>
-                        <p class="lead">@<a href="/profile/<%= profile._id %>"><%=post.author.username %></a> <span class="date" style="font-size: .7em;"><%=post.date%></span> </p>
-                        <p class="lead"><span class="post-content"><%= post.content %></span></p>
-                        <div class="spotify-embeds">
-                            <div class="spotify-embed">
-                                <iframe class="rounded song-tile" src="<%= post.song %>"   frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe>
-                            </div>
-                        </div>
-                    </li>
-                <% })%>
-            </ul>
+            <%- include("partials/post-list", {post: posts, user: user}) %>
         </div>
     </div>
 </div>
