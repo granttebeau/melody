@@ -22,6 +22,18 @@ window.addEventListener("load", () => {
     setSearchBar()
 })
 
+window.addEventListener("click", function(event) {
+    var searchBar = document.querySelector("#search-input")
+    var searchResults = document.querySelector(".search-display-items")
+
+    var isClickInside = searchBar.contains(event.target) || searchResults.contains(event.target)
+    if (!isClickInside) {
+        document.querySelector(".search-display-items").classList.add("d-none")
+    } else {
+        document.querySelector(".search-display-items").classList.remove("d-none")
+    }
+})
+
 document.querySelector("#search-input").addEventListener("input", function() {
     if (this.value === "") {
         for (var i = 1; i < 10; i += 2) {

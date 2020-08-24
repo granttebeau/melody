@@ -3,10 +3,13 @@ function styleHomePage() {
         document.querySelector("#home-screen-content").classList.remove("home-screen-content")
     }
     else {
-        document.querySelector("#home-screen-content").classList.remove("home-screen-content")
+        document.querySelector("#home-screen-content").classList.add("home-screen-content")
     }
   }
 
 window.addEventListener("resize", () => {
+    styleHomePage()
+})
+window.addEventListener("load", () => {
     styleHomePage()
 })

@@ -14,6 +14,14 @@ var fifth = document.querySelector(".fifth")
 var listSongs = [first, second, third, fourth, fifth]
 var songLink = document.querySelector("input[type='hidden']")
 
+window.addEventListener("click", function(event) {
+  var isClickInside = song.contains(event.target) || list.contains(event.target)
+  if (!isClickInside) {
+      list.classList.add("d-none")
+  } else {
+      list.classList.remove("d-none")
+  }
+})
 
 song.addEventListener("input", function() {
   axios.post('https://accounts.spotify.com/api/token', 'grant_type=client_credentials', options).then((response) => {
