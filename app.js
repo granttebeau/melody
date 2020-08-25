@@ -222,7 +222,8 @@ app.post("/new-post", function(req, res) {
                     date: Date.now(),
                     author: {
                         id: req.user._id,
-                        username: req.user.username
+                        username: req.user.username,
+                        name: req.user.fullName
                     }
                 })
                 post.save()
@@ -244,7 +245,8 @@ app.post("/new-post", function(req, res) {
             date: Date.now(),
             author: {
                 id: req.user._id,
-                username: req.user.username
+                username: req.user.username,
+                name: req.user.fullName
             }
         })
         post.save()

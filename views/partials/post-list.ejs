@@ -4,11 +4,13 @@
             <li class="post">
                 <%- include("post-dropdown", {post: post}) %>
                 <% if (post.author.id.equals(user._id)) { %>
-                    <p class="lead">@<a href="/profile"><%=post.author.username %></a> <span class="date" style="font-size: .7em;"><%=post.date%></span> </p>
+                    <a href="/profile"><img class="float-left profile-pic-tile" src="images/filler.jpg" alt="profile pic"></a>
+                    <p class="lead" style="margin: 2px 0 6px 4px;"><a href="/profile" class="name"><b><%= post.author.name %></b></a> <a href="/profile" class="username">@<%=post.author.username %></a> <span class="date" style="font-size: .7em;"><%=post.date%></span> </p>
                 <% } else { %>
-                    <p class="lead">@<a href="/profile/<%= post.author.id %>"><%=post.author.username %></a> <span class="date" style="font-size: .7em;"><%=post.date%></span> </p>
+                    <a href="/profile/<%= post.author.id %>"><img class="float-left profile-pic-tile" src="images/filler.jpg" alt="profile pic"></a>
+                    <p class="lead" style="margin: 2px 0 6px 4px;"><a href="/profile/<%= post.author.id %>" class="name"><b><%= post.author.name %></b></a> <a href="/profile/<%= post.author.id %>" class="username">@<%=post.author.username %></a> <span class="date" style="font-size: .7em;"><%=post.date%></span> </p>
                 <% } %>
-                <p class="lead"><span class="post-content"><%= post.content %></span></p>
+                <p class="post-text-content"><span class="post-content"><%= post.content %></span></p>
                 <div class="spotify-embeds">
                     <div class="spotify-embed">
                         <iframe class="rounded song-tile" src="<%= post.song %>"   frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe>

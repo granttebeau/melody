@@ -48,3 +48,24 @@ document.querySelectorAll(".post-dropdown-arrow ").forEach(arrow => {
         dropdown.classList.toggle("display-none")
     })
 })
+
+
+var dropdowns = document.querySelectorAll(".post-dropdown")
+
+dropdowns.forEach(dd => {
+    var arrow = dd.childNodes[1]
+    var dropdown = dd.childNodes[3]
+    window.addEventListener("click", function(event) {
+
+        var isClickInside = arrow.contains(event.target) || dropdown.contains(event.target)
+        if (!isClickInside) {
+            if (arrow.classList.contains("fa-angle-up")) {
+                arrow.classList.toggle("fa-angle-down")
+                arrow.classList.toggle("fa-angle-up")
+            }
+            dropdown.classList.add("d-none")
+        } else {
+            dropdown.classList.remove("d-none")
+        }
+    })
+})

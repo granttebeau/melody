@@ -15,6 +15,18 @@ html, body {
     color: #f1935c !important; 
 }
 
+.profile-pic-tile {
+    width: 50px; 
+    height: 50px; 
+    object-fit: cover; 
+    margin-right: 10px;
+    border-radius: 50%;
+}
+
+.post-text-content {
+    font-size: 1.14rem;
+}
+
 .home-screen-content {
     position: fixed;
 }
@@ -130,9 +142,20 @@ html, body {
     display: none;
 }
 
-.post a {
+.post-dropdown-arrow-list a {
     color: #f1935c;
     text-decoration: none;
+}
+.post a.username {
+    color: #f1935c;
+    text-decoration: none;
+}
+.post a.name {
+    color: #30475e;
+    text-decoration: none;
+}
+.post a.name:hover {
+    text-decoration: underline;
 }
 .post-content {
     font-weight: 400;
