@@ -37,7 +37,7 @@ To start the application, run ``` node app.js ```, and go to [http://localhost:8
 ## How to Use
 
 The application flow is similar to that of a normal social media application. To select a song to post, type in the name of the song and either select an option from the dropdown menu or click post and the song will be on your post.
-The navbar consists of links for the home feed, your profile, notifications (the music notes- still in development), and a search bar (still in development).
+The navbar consists of links for the home feed, your profile, notifications (the music notes- still in development), and a search bar.
 
 ## Tech/framework used
 
@@ -45,8 +45,7 @@ The navbar consists of links for the home feed, your profile, notifications (the
 - [Spotify Web API](https://developer.spotify.com/documentation/web-api/)
 - [Node.js](https://github.com/nodejs/node)
 - [Express](https://github.com/expressjs/express)
-- [MongoDB with Mongoose](https://www.npmjs.com/package/mongoose)
-- [Axios](https://www.npmjs.com/package/axios)
+- [MongoDB](https://www.npmjs.com/package/mongoose)
 
 
 ## License 
