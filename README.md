@@ -15,7 +15,7 @@ I felt like it was somewhat of a taboo to post music on your Instagram/Snap stor
 
 Clone the application and run ``` npm install ``` in the project directory.
 
-You'll have to make sure that the Mongo database is correctly set up in the app- to do so, make sure that the url variable for the Mongo database on line 20 is not commented out and the variable for the local database is, like so: 
+You'll have to make sure that the Mongo database is correctly set up in the app.js file- to do so, make sure that the url variable for the Mongo database on line 20 is not commented out and the variable for the local database is, like so: 
 
 ``` 
 19: // var url = "mongodb://localhost/melody"
