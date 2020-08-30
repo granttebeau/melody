@@ -13,7 +13,23 @@ I felt like it was somewhat of a taboo to post music on your Instagram/Snap stor
 
 ## Installation
 
-Clone the application and run ``` npm install ``` in the project directory. To start the application, run ``` node app.js ```, and go to [http://localhost:8000](http://localhost:8000/). The app is connected to a Mongo database, so feel free to sign up and test the app out! To start out, search my username (@granttebeau) in the search bar and give me a follow!
+Clone the application and run ``` npm install ``` in the project directory.
+
+You'll have to make sure that the Mongo database is correctly set up in the app- to do so, make sure that the url variable on line 20 is set to the public database, not the local database, like so: 
+
+``` var url = "mongodb+srv://public:0vRokIdC25tC532f@melody.1dhd4.mongodb.net/Melody?retryWrites=true&w=majority" ```
+
+Similar with the uri parameter in the store variable on line 32: 
+
+``` 
+const store = new MongoDBStore({
+    // uri: "mongodb://localhost/melody",
+    uri: "mongodb+srv://public:0vRokIdC25tC532f@melody.1dhd4.mongodb.net/Melody?retryWrites=true&w=majority",
+    collection: 'users'
+});
+```
+
+To start the application, run ``` node app.js ```, and go to [http://localhost:8000](http://localhost:8000/). The app is connected to a Mongo database, so feel free to sign up and test the app out! To start out, search my username (@granttebeau) in the search bar and give me a follow!
 
 ## How to Use
 
