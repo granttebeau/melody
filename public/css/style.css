@@ -1,12 +1,32 @@
 @import url('https://fonts.googleapis.com/css2?family=Satisfy&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Lato&display=swap');
 
-html, body {
+html {
     height: 100%;
     width: 100%;
     color: #30475e;
     margin-top: 50px !important;
     font-family: 'Lato', sans-serif;
+}
+body {
+    height: 100%;
+    width: 100%;
+    color: #30475e;
+    font-family: 'Lato', sans-serif;
+}
+
+.edit-window {
+    position: fixed;
+    width: 35%;
+    height: 25%;
+    margin: 10% 35%;
+    padding: 25px;
+    background-color: #fcf8e8;
+    filter: blur(0px) !important;
+    z-index: 999999999;
+}
+#edit-window-exit {
+    cursor: pointer;
 }
 
 .logo {
@@ -29,6 +49,7 @@ html, body {
 
 .home-screen-content {
     position: fixed;
+    margin-top: 50px;
 }
 
 .profile {

@@ -100,7 +100,7 @@ app.get('/profile/picture', function(req,res,next) {
   });
 
 app.get('/profile/:id/picture', function(req,res,next) {
-    User.findById( req.params.id, function(err,user) {
+    User.findById(req.params.id, function(err,user) {
         if (err) return next(err);
         res.contentType(user.image.contentType);
         res.send(user.image.data);
@@ -193,6 +193,14 @@ app.get("/profile/notifications", function(req, res) {
     res.send("notifications")
 })
 
+app.get("/post-info/:id", function(req, res) {
+    Post.findById(req.params.id, function(err, post) {
+        if (err) console.log(err)
+        console.log(post)
+        res.send(post)
+    })
+})
+
 app.post("/new-post", function(req, res) {
     var content = req.body.content
     var song = req.body.song
@@ -218,6 +226,7 @@ app.post("/new-post", function(req, res) {
                 songLink = "https://open.spotify.com/embed/track/" + response.data.tracks.items[0].id
                 var post = new Post({
                     content: content,
+                    songSearch: song,
                     song: songLink,
                     date: Date.now(),
                     author: {
@@ -242,6 +251,7 @@ app.post("/new-post", function(req, res) {
         var post = new Post({
             content: content,
             song: songLink,
+            songSearch: song,
             date: Date.now(),
             author: {
                 id: req.user._id,

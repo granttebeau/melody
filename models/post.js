@@ -2,6 +2,7 @@ var mongoose = require("mongoose")
 
 var postSchema = new mongoose.Schema({
     content: String,
+    songSearch: String,
     song: String,
     date: Number,
     author: {
