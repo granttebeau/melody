@@ -4,26 +4,39 @@ const options = {
       'Authorization': 'Basic ZjEyMDdhYjNhODcwNDk5MmIyMjZiMTI1ODdhYTdjMDI6NGY3YWMxMWI1NTk5NDFiNmExZmMxMTI4MWQ4NDljZTA',}
 };
 
-var song = document.querySelector("input.song")
-var list = document.querySelector(".song-display-items")
-var first = document.querySelector(".first")
-var second = document.querySelector(".second")
-var third = document.querySelector(".third")
-var fourth = document.querySelector(".fourth")
-var fifth = document.querySelector(".fifth")
-var listSongs = [first, second, third, fourth, fifth]
-var songLink = document.querySelector("input[type='hidden']")
+var postSong = document.querySelector("input.song")
+var postList = document.querySelector(".song-display-items")
+var postFirst = document.querySelector(".first")
+var postSecond = document.querySelector(".second")
+var postThird = document.querySelector(".third")
+var postFourth = document.querySelector(".fourth")
+var postFifth = document.querySelector(".fifth")
+var postListSongs = [postFirst, postSecond, postThird, postFourth, postFifth]
+var postSongLink = document.querySelector("input[name='songlink']")
+
+var editSong = document.querySelector("input.edit-song")
+var editList = document.querySelector(".song-edit-display-items")
+var editFirst = document.querySelector(".edit-first")
+var editSecond = document.querySelector(".edit-second")
+var editThird = document.querySelector(".edit-third")
+var editFourth = document.querySelector(".edit-fourth")
+var editFifth = document.querySelector(".edit-fifth")
+var editListSongs = [editFirst, editSecond, editThird, editFourth, editFifth]
+var editSongLink = document.querySelector("input[name='editsonglink']")
 
 window.addEventListener("click", function(event) {
-  var isClickInside = song.contains(event.target) || list.contains(event.target)
+  var isClickInside = postSong.contains(event.target) || editSong.contains(event.target) || postList.contains(event.target)
   if (!isClickInside) {
-      list.classList.add("d-none")
+      postList.classList.add("d-none")
+      editList.classList.add("d-none")
   } else {
-      list.classList.remove("d-none")
+      postList.classList.remove("d-none")
+      editList.classList.remove("d-none")
   }
 })
 
-song.addEventListener("input", function() {
+var spotifyFunction = function (song, songLink, first, second, third, fourth, fifth, list) {
+  console.log("HELLO")
   axios.post('https://accounts.spotify.com/api/token', 'grant_type=client_credentials', options).then((response) => {
  
     var at = response.data.access_token
@@ -75,17 +88,28 @@ song.addEventListener("input", function() {
   }).catch(function (error) {
     console.log(error)
   })
-  
+}
+
+postSong.addEventListener("input", () => {
+  spotifyFunction(postSong, postSongLink, postFirst, postSecond, postThird, postFourth, postFifth, postList)
+})
+
+editSong.addEventListener("input", () => {
+  spotifyFunction(editSong, editSongLink, editFirst, editSecond, editThird, editFourth, editFifth, editList)
 })
 
 function changeValue(element) {
-    song.value = element.textContent
-    list.classList.add("display-none")
+  postSong.value = element.textContent
+  postList.classList.add("display-none")
 }
 
+postListSongs.forEach(song => {
+  song.addEventListener("click", function() {
+    changeValue(this)
+  })
+})
 
-
-listSongs.forEach(song => {
+editListSongs.forEach(song => {
   song.addEventListener("click", function() {
     changeValue(this)
   })

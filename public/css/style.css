@@ -5,14 +5,23 @@ html {
     height: 100%;
     width: 100%;
     color: #30475e;
-    margin-top: 50px !important;
     font-family: 'Lato', sans-serif;
+    overflow: hidden;
 }
 body {
     height: 100%;
     width: 100%;
     color: #30475e;
     font-family: 'Lato', sans-serif;
+    overflow: auto;
+}
+
+.content {
+    margin-top: 100px !important;
+}
+
+.panel {
+    margin-top: 10px;
 }
 
 .edit-window {
@@ -53,7 +62,7 @@ body {
 }
 
 .profile {
-    position: fixed;
+    position: fixed !important;
 }
 .btn-primary {
     background-color: #f1935c;

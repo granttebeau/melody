@@ -14,21 +14,32 @@ edit.forEach(post => {
                 return res
             }).then(result => {
                 document.querySelector("#edit-text").value = result.content
-                document.querySelector("#edit-song").value = result.songSearch
+                var song = result.songSearch.split(",")
+                document.querySelector("#edit-song").value = song
             })
         
         document.querySelector(".edit-window").classList.remove("d-none")
         var elements = document.querySelectorAll("body > *:not(.edit-window")
         elements.forEach(element => {
             element.style.filter = "blur(6px) brightness(95%)"
+            element.style.pointerEvents = "none"
         })
+        disableScrolling()
     })
 })
+
+function disableScrolling(){
+    var x = window.scrollX;
+    var y = window.scrollY;
+    window.onscroll=function(){window.scrollTo(x, y);};
+}
 
 document.querySelector("#edit-window-exit").addEventListener("click", () => {
     document.querySelector(".edit-window").classList.add("d-none")
     var elements = document.querySelectorAll("body > *:not(.edit-window")
     elements.forEach(element => {
-        element.style.filter = "blur(0px) brightness(100%)"
+        element.style.filter = ""
+        element.style.pointerEvents = ""
     })
+    window.onscroll=function(){};
 })

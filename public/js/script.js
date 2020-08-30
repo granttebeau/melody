@@ -41,14 +41,22 @@ window.addEventListener("resize", function() {
 
 document.querySelectorAll(".post-dropdown-arrow ").forEach(arrow => {
     arrow.addEventListener("click", function() {
-        arrow.classList.toggle("fa-angle-down")
-        arrow.classList.toggle("fa-angle-up")
-        var parent = arrow.parentElement
-        var dropdown = parent.querySelector("ul")
-        dropdown.classList.toggle("display-none")
+        if (arrow.classList.contains("fa-angle-down")) {
+            arrow.classList.remove("fa-angle-down")
+            arrow.classList.add("fa-angle-up")
+            var parent = arrow.parentElement
+            var dropdown = parent.querySelector("ul")
+            dropdown.classList.remove("display-none")
+        }
+        else {
+            arrow.classList.add("fa-angle-down")
+            arrow.classList.remove("fa-angle-up")
+            var parent = arrow.parentElement
+            var dropdown = parent.querySelector("ul")
+            dropdown.classList.add("display-none")
+        }
     })
 })
-
 
 var dropdowns = document.querySelectorAll(".post-dropdown")
 

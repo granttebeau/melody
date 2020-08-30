@@ -196,7 +196,6 @@ app.get("/profile/notifications", function(req, res) {
 app.get("/post-info/:id", function(req, res) {
     Post.findById(req.params.id, function(err, post) {
         if (err) console.log(err)
-        console.log(post)
         res.send(post)
     })
 })
