@@ -27,18 +27,21 @@ var editSongLink = document.querySelector("input[name='editsonglink']")
 window.addEventListener("click", function(event) {
   var isClickInside = postSong.contains(event.target) || editSong.contains(event.target) || postList.contains(event.target)
   if (!isClickInside) {
-      postList.classList.add("d-none")
-      editList.classList.add("d-none")
-  } else {
-      postList.classList.remove("d-none")
-      editList.classList.remove("d-none")
+      postList.classList.add("display-none")
+      editList.classList.add("display-none")
   }
+  // } else {
+  //     if (editSong.value !== '') {
+  //       editList.classList.remove("display-none")
+  //     }
+  //     if (postSong.value !== '') {
+  //       postList.classList.remove("display-none")
+  //     }
+  // }
 })
 
 var spotifyFunction = function (song, songLink, first, second, third, fourth, fifth, list) {
-  console.log("HELLO")
   axios.post('https://accounts.spotify.com/api/token', 'grant_type=client_credentials', options).then((response) => {
- 
     var at = response.data.access_token
     var op = {
         headers: {
@@ -48,39 +51,38 @@ var spotifyFunction = function (song, songLink, first, second, third, fourth, fi
     
 
     var qs = createQueryString(song.value)
+    console.log(qs)
     if (qs === "") {
+      if (song == editSong) {
+      }
       return list.classList.add("display-none")
     }
+    console.log(song.value)
     axios.get("https://api.spotify.com/v1/search" + qs, op).then((response) => {
-        if (song.value == '') {
-          list.classList.add("display-none")
-        }
-        else {
-          list.classList.remove("display-none")
-          first.textContent = response.data.tracks.items[0].name + ", " + response.data.tracks.items[0].artists[0].name
-          first.addEventListener("click", function() {
-            songLink.value = "https://open.spotify.com/embed/track/" + response.data.tracks.items[0].id
-          })
+      list.classList.remove("display-none")
+      first.textContent = response.data.tracks.items[0].name + ", " + response.data.tracks.items[0].artists[0].name
+      first.addEventListener("click", function() {
+        songLink.value = "https://open.spotify.com/embed/track/" + response.data.tracks.items[0].id
+      })
 
-          second.textContent = response.data.tracks.items[1].name + ", " + response.data.tracks.items[1].artists[0].name
-          second.addEventListener("click", function() {
-            songLink.value = "https://open.spotify.com/embed/track/" + response.data.tracks.items[1].id
-          })
+      second.textContent = response.data.tracks.items[1].name + ", " + response.data.tracks.items[1].artists[0].name
+      second.addEventListener("click", function() {
+        songLink.value = "https://open.spotify.com/embed/track/" + response.data.tracks.items[1].id
+      })
 
-          third.textContent = response.data.tracks.items[2].name + ", " + response.data.tracks.items[2].artists[0].name
-          third.addEventListener("click", function() {
-            songLink.value = "https://open.spotify.com/embed/track/" + response.data.tracks.items[2].id
-          })
+      third.textContent = response.data.tracks.items[2].name + ", " + response.data.tracks.items[2].artists[0].name
+      third.addEventListener("click", function() {
+        songLink.value = "https://open.spotify.com/embed/track/" + response.data.tracks.items[2].id
+      })
 
-          fourth.textContent = response.data.tracks.items[3].name + ", " + response.data.tracks.items[3].artists[0].name
-          fourth.addEventListener("click", function() {
-            songLink.value = "https://open.spotify.com/embed/track/" + response.data.tracks.items[3].id
-          })
-          fifth.textContent = response.data.tracks.items[4].name + ", " + response.data.tracks.items[4].artists[0].name
-          fifth.addEventListener("click", function() {
-            songLink.value = "https://open.spotify.com/embed/track/" + response.data.tracks.items[4].id
-          })
-        }
+      fourth.textContent = response.data.tracks.items[3].name + ", " + response.data.tracks.items[3].artists[0].name
+      fourth.addEventListener("click", function() {
+        songLink.value = "https://open.spotify.com/embed/track/" + response.data.tracks.items[3].id
+      })
+      fifth.textContent = response.data.tracks.items[4].name + ", " + response.data.tracks.items[4].artists[0].name
+      fifth.addEventListener("click", function() {
+        songLink.value = "https://open.spotify.com/embed/track/" + response.data.tracks.items[4].id
+      })
     }).catch(function (error) {
       console.log(error)
     })
@@ -98,20 +100,28 @@ editSong.addEventListener("input", () => {
   spotifyFunction(editSong, editSongLink, editFirst, editSecond, editThird, editFourth, editFifth, editList)
 })
 
-function changeValue(element) {
-  postSong.value = element.textContent
-  postList.classList.add("display-none")
+editSong.addEventListener("click", () => {
+  if (editSong.value === '') {
+    editList.classList.add("display-none")
+  }
+})
+
+function changeValue(element, song, list) {
+  song.value = element.textContent
+  list.classList.add("display-none")
+  if (song == editSong) {
+  }2
 }
 
 postListSongs.forEach(song => {
   song.addEventListener("click", function() {
-    changeValue(this)
+    changeValue(this, postSong, postList)
   })
 })
 
 editListSongs.forEach(song => {
   song.addEventListener("click", function() {
-    changeValue(this)
+    changeValue(this, editSong, editList)
   })
 })
 

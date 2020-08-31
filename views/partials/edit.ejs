@@ -1,19 +1,25 @@
 <div class="edit-window d-none">
     <h3>Edit post:</h3>
     <p id="edit-window-exit">Exit</p>
-    <div class="form-group">
-        <input class="form-control" type="text" name="content" id="edit-text" required>
-    </div>
-    <div class="form-group">
-        <input class="form-control edit-song" id="edit-song" autocomplete="off" name="song" required list="songs-list">
-        <ul class="song-edit-display-items rounded-bottom display-none">
-            <li class="edit-first"></li>
-            <li class="edit-second"></li>
-            <li class="edit-third"></li>
-            <li class="edit-fourth"></li>
-            <li class="edit-fifth"></li>
-        </ul>
-
-    </div>
-    <input type="hidden" name="editsonglink" value="" required>
+    <form></form>
+    <form method="POST" class="edit-post-form">
+        <div class="form-group">
+            <input class="form-control" type="text" name="content" id="edit-text" required>
+        </div>
+        <div class="form-group">
+            <input class="form-control edit-song" id="edit-song" autocomplete="off" name="song" required list="songs-list">
+            <ul class="song-edit-display-items rounded-bottom display-none">
+                <li class="edit-first"></li>
+                <li class="edit-second"></li>
+                <li class="edit-third"></li>
+                <li class="edit-fourth"></li>
+                <li class="edit-fifth"></li>
+            </ul>
+    
+        </div>
+        <input type="hidden" name="editsonglink" value="" required>
+        <div class="form-group">
+            <input type="submit" value="Update" class="btn btn-primary btn-block">
+        </div>
+    </form>
 </div>

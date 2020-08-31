@@ -3,7 +3,6 @@ var edit = document.querySelectorAll(".edit-post")
 edit.forEach(post => {
     post.addEventListener("click", () => {
         var query = "/post-info/" + post.id
-        console.log(query)
         fetch(query, {
             method: "GET",
             headers: {
@@ -18,6 +17,7 @@ edit.forEach(post => {
                 document.querySelector("#edit-song").value = song
             })
         
+        document.querySelector(".edit-post-form").action = "/update-post/" + post.id + "?_method=PUT"
         document.querySelector(".edit-window").classList.remove("d-none")
         var elements = document.querySelectorAll("body > *:not(.edit-window")
         elements.forEach(element => {

@@ -27,7 +27,7 @@ body {
 .edit-window {
     position: fixed;
     width: 35%;
-    height: 25%;
+    height: auto !important;
     margin: 10% 35%;
     padding: 25px;
     background-color: #fcf8e8;
@@ -79,7 +79,7 @@ body {
     padding: 0 0 25px 0;
 }
 
-.song-display-items {
+.song-display-items, .song-edit-display-items {
     list-style: none;
     background: white;
     border: 1px solid black;
@@ -87,13 +87,13 @@ body {
     padding-inline-start: 0 !important;
 }
 
-.song-display-items li {
+.song-display-items li, .song-edit-display-items li {
     padding: 5px 0 5px 25px;
     border-top: 1px #dddddd solid;
     cursor: pointer; 
     border-bottom: 1px #dddddd solid;
 }
-.song-display-items li:hover {
+.song-display-items li:hover, .song-edit-display-items li:hover {
     background: #dddddd
 }
 
@@ -229,6 +229,13 @@ ul.navbar-nav{
     display: none;
 }
 
+@media (max-width: 1532px) {
+    .edit-window {
+        width: 60%;
+        margin: 10% 20%;
+    }
+}
+
 @media (max-width: 992px) {
     .profile-pic-container {
         width: 150px;
@@ -241,6 +248,7 @@ ul.navbar-nav{
     .profile-pic {
         margin: 0;
     }
+    
 }
 
 @media (max-width: 768px) {
@@ -271,6 +279,11 @@ ul.navbar-nav{
     .profile-pic-container {
         width: 80px;
         height: 80px;
+    }
+
+    .edit-window {
+        width: 90%;
+        margin: 10% 5%;
     }
 
 }

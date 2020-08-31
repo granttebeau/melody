@@ -16,8 +16,8 @@ var User = require("./models/user"),
 
 var IndexRoutes = require("./routes/index")
 
-// var url = "mongodb://localhost/melody"
-var url = "mongodb+srv://public:0vRokIdC25tC532f@melody.1dhd4.mongodb.net/Melody?retryWrites=true&w=majority"
+var url = "mongodb://localhost/melody"
+// var url = "mongodb+srv://public:0vRokIdC25tC532f@melody.1dhd4.mongodb.net/Melody?retryWrites=true&w=majority"
 mongoose.connect(url, { useUnifiedTopology: true, useNewUrlParser: true })
 app.set("view engine", "ejs")
 
@@ -30,8 +30,8 @@ app.use(methodOverride("_method"))
 
 
 const store = new MongoDBStore({
-    // uri: "mongodb://localhost/melody",
-    uri: "mongodb+srv://public:0vRokIdC25tC532f@melody.1dhd4.mongodb.net/Melody?retryWrites=true&w=majority",
+    uri: "mongodb://localhost/melody",
+    // uri: "mongodb+srv://public:0vRokIdC25tC532f@melody.1dhd4.mongodb.net/Melody?retryWrites=true&w=majority",
     collection: 'users'
 });
 app.use(session({
@@ -198,6 +198,63 @@ app.get("/post-info/:id", function(req, res) {
         if (err) console.log(err)
         res.send(post)
     })
+})
+
+app.put("/update-post/:id", function(req, res, next) {
+    var content = req.body.content
+    var song = req.body.song
+    let songLink = req.body.editsonglink
+    var id = req.params.id
+    if (songLink === "") {
+        const options = {
+            headers: {
+                'Content-Type':'application/x-www-form-urlencoded',
+                'Authorization': 'Basic ZjEyMDdhYjNhODcwNDk5MmIyMjZiMTI1ODdhYTdjMDI6NGY3YWMxMWI1NTk5NDFiNmExZmMxMTI4MWQ4NDljZTA',}
+          };
+        axios.post('https://accounts.spotify.com/api/token', 'grant_type=client_credentials', options).then((response) => {
+ 
+            var at = response.data.access_token
+            var op = {
+                headers: {
+                    'Content-Type':'application/x-www-form-urlencoded',
+                    'Authorization': 'Bearer ' + at,}
+                };
+            
+        
+            var qs = createQueryString(song)
+            axios.get("https://api.spotify.com/v1/search" + qs, op).then((response) => {
+                songLink = "https://open.spotify.com/embed/track/" + response.data.tracks.items[0].id
+                Post.findById(id, function(err, post) {
+                    if (err) console.log(err)
+                    post.content = content
+                    post.songSearch = song
+                    post.song = songLink
+                    
+                    post.save()
+                    res.redirect(req.get('referer'));
+                })
+            }).catch(function (error) {
+                console.log(error)
+                return
+            })
+            }).catch(function (error) {
+                console.log(error)
+                return
+        })
+
+    }
+    else {
+        Post.findById(id, function(err, post) {
+            if (err) console.log(err)
+            post.content = content
+            post.songSearch = song
+            post.song = songLink
+            
+            post.save()
+            res.redirect(req.get('referer'));
+        })
+    }
+
 })
 
 app.post("/new-post", function(req, res) {
