@@ -8,9 +8,9 @@ var multer = require("multer"),
 var User = require("../models/user")
 
 var passport = require("passport") 
+var middleware = require("../middleware/index")
 
-
-router.get("/", isNotLoggedIn, function(req, res) {
+router.get("/", middleware.isNotLoggedIn, function(req, res) {
     res.render("landing/landing")
 })
 
@@ -73,18 +73,5 @@ router.get("/logout", function(req, res) {
     res.redirect("/")
 })
 
-function isLoggedIn(req, res, next) {
-    if (req.isAuthenticated()) {
-        return next();
-    }
-    res.redirect("/")
-}
-
-function isNotLoggedIn(req, res, next) {
-    if (req.isAuthenticated()) {
-        return res.redirect("/profile");
-    }
-    next()
-}
 
 module.exports = router
