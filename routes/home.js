@@ -13,7 +13,10 @@ router.get("/home", middleware.isLoggedIn, function(req, res) {
         following.push(user.username)
         Post.find({"author.username": {$in : following}}, function(err, posts) {
             if (err) console.log(err);
-            res.render("home", {posts: posts})
+
+            var popular = posts.map(post => post.songTitle)
+            // console.log(middleware.mode(postsByID))
+            res.render("home", {posts: posts, popular: popular})
         })
     })
 })

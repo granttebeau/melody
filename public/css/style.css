@@ -56,9 +56,22 @@ body {
     font-size: 1.14rem;
 }
 
+/* #home-screen-content {
+    border: 5px solid red;
+} */
+
 .home-screen-content {
     position: fixed;
+    width: 25%;
     margin-top: 50px;
+}
+.home-screen-content h3 {
+    width: 80%;
+}
+#home-screen-content ul {
+    width: 100%;
+    list-style: none;
+    padding-left: 0 !important;
 }
 
 .profile {

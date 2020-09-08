@@ -96,9 +96,11 @@ router.post("/new-post", function(req, res) {
             var qs = middleware.createQueryString(song)
             axios.get("https://api.spotify.com/v1/search" + qs, op).then((response) => {
                 songLink = "https://open.spotify.com/embed/track/" + response.data.tracks.items[0].id
+                var songName = response.data.tracks.items[0].name
                 var post = new Post({
                     content: content,
                     songSearch: song,
+                    songTitle: songName,
                     song: songLink,
                     date: Date.now(),
                     author: {
@@ -120,10 +122,12 @@ router.post("/new-post", function(req, res) {
 
     }
     else {
+        var songName = req.body.song.split(",")[0]
         var post = new Post({
             content: content,
             song: songLink,
             songSearch: song,
+            songTitle: songName,
             date: Date.now(),
             author: {
                 id: req.user._id,
