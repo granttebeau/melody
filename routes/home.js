@@ -13,10 +13,23 @@ router.get("/home", middleware.isLoggedIn, function(req, res) {
         following.push(user.username)
         Post.find({"author.username": {$in : following}}, function(err, posts) {
             if (err) console.log(err);
-
+            
+            var songs = 0;
             var popular = posts.map(post => post.songTitle)
+            var popularFive = []
+            let song
+            while (songs < 5) {
+                song = middleware.mode(popular)
+                popularFive.push(song)
+                popular = popular.filter(s => s !== song)
+                if (popular.length === 0) {
+                    songs = 5
+                }
+                songs ++
+            }
+            console.log(popularFive)
             // console.log(middleware.mode(postsByID))
-            res.render("home", {posts: posts, popular: popular})
+            res.render("home", {posts: posts, popular: popularFive})
         })
     })
 })
