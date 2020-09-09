@@ -5,9 +5,9 @@
             <div id="home-screen-content">
                 <h3>What people are listening to:</h3>
                 <ul>
-                    <% popular.forEach(post => { %>
-                        <li class="popular-post"><%= post %></li>
-                    <% }) %>
+                    <% for (var i = 0; i < popular.length; i++) { %>
+                        <li class="popular-post"><%= i + 1 %>. <%= popular[i] %></li>
+                    <% } %>
                 </ul>
             </div>
         </div>

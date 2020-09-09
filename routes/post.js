@@ -122,7 +122,13 @@ router.post("/new-post", function(req, res) {
 
     }
     else {
-        var songName = req.body.song.split(",")[0]
+        var songList = req.body.song.split(")")
+        let songName = ""
+        songList.length === 1 ? songName = songList[0] : songName = songList[0] + ")"
+        if (songName.split(",").length === 2) {
+            songName = songName.split(",")[0]
+        }
+        console.log(songName)
         var post = new Post({
             content: content,
             song: songLink,
