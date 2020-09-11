@@ -60,8 +60,14 @@ router.post('/search-page', async function(req, res, next) {
 })
 
 // renders the search page
+router.get("/search/:search", function(req, res, next) {
+    var search = req.params.search
+    return res.render("search", {search: search})
+})
+
+// renders the search page
 router.get("/search", function(req, res, next) {
-    res.render("search")
+    res.render("search", {id: false})
 })
 
 

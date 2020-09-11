@@ -1,6 +1,10 @@
 <%- include("partials/header") %>
 <span class="search-page-span">
-    <input class="form-control rounded m-0 mr-0 mr-md-1" id="search-page-input" type="search" placeholder="Search" aria-label="Search">
+    <% if (id) { %>   
+      <input class="form-control rounded m-0 mr-0 mr-md-1" id="search-page-input" type="search" value="<%= search %>" placeholder="Search" aria-label="Search">
+    <% } else { %>
+      <input class="form-control rounded m-0 mr-0 mr-md-1" id="search-page-input" type="search"  placeholder="Search" aria-label="Search">
+    <% } %>
  
       <ul class="search-page-display-items rounded-bottom ">
     </ul>

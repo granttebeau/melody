@@ -74,11 +74,12 @@ document.querySelector("#search-input").addEventListener("input", function() {
             }
             for (var i = 1; i < 10; i += 2) {
                 if (listItems.childNodes[i].childNodes[0].textContent === "") {
-                    console.log(listItems.childNodes[i])
                     listItems.childNodes[i].classList.add("d-none")
                 }
             }
             document.querySelector("#sixth-text").textContent = this.value
+            var searchValue = document.querySelector("#search-sixth-link")
+            searchValue.href = "/search/" + this.value
         }).catch(error => {
             console.log(error)
         })

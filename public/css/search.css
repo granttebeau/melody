@@ -90,3 +90,15 @@
     font-size: 1.1em;
     font-weight: 700;
 }
+
+@media (max-width: 792px) {
+    .search-page-span {
+        width: 100%;
+    }
+    #search-page-input {
+        width: 80%;
+    }
+    .search-page-display-items {
+        width: 80%;
+    }
+}
