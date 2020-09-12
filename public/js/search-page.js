@@ -116,7 +116,6 @@ function searchPage(items) {
             var num = result.length
             var listItems = document.querySelector(".search-page-display-items-post")
             while (listItems.firstChild) {
-                alert("HELLO")
                 listItems.removeChild(listItems.firstChild)
             }
             for (var i = 0; i < num; i++) {
