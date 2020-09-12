@@ -1,12 +1,28 @@
 <%- include("partials/header") %>
 <span class="search-page-span">
-    <% if (id) { %>   
+    <div class="text-center col-12">
+      <h4>Search by:</h4>
+      <ul class="search-parameters">
+        <li>
+          <input type="radio" id="user-search" name="size" checked="checked" value="User"/>
+          <label for="user-search">User</label>
+        </li>
+        <li>
+          <input type="radio" id="post-search" name="size" value="Post"/>
+          <label for="post-search">Post</label>
+        </li>
+      </ul>
+    </div>
+    <% if (search) { %>   
       <input class="form-control rounded m-0 mr-0 mr-md-1" id="search-page-input" type="search" value="<%= search %>" placeholder="Search" aria-label="Search">
     <% } else { %>
       <input class="form-control rounded m-0 mr-0 mr-md-1" id="search-page-input" type="search"  placeholder="Search" aria-label="Search">
     <% } %>
- 
-      <ul class="search-page-display-items rounded-bottom ">
+
+    <ul class="search-page-display-items search-page-display-items-user rounded-bottom ">
+    </ul>
+    <ul class="search-page-display-items search-page-display-items-post d-none rounded-bottom ">
+      <li>Hello</li>
     </ul>
     
   </span>

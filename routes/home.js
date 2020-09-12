@@ -47,12 +47,26 @@ router.post('/search', async function(req, res, next) {
 })
 
 // searches for users by username, and sends the list
-router.post('/search-page', async function(req, res, next) {
+router.post('/search-page/user', async function(req, res, next) {
     var text = req.body.text
+    console.log(text)
     User.find({'username':  { $regex: text, $options: "i" }}, function(err, users) {
         if (err) return next(err);
         var content = {
             users: users,
+            id: req.user._id
+        }
+        res.send(content)
+    })
+})
+
+// searches for users by username, and sends the list
+router.post('/search-page/post', async function(req, res, next) {
+    var text = req.body.text
+    Post.find({'content':  { $regex: text, $options: "i" }}, function(err, posts) {
+        if (err) return next(err);
+        var content = {
+            posts: posts,
             id: req.user._id
         }
         res.send(content)
@@ -67,7 +81,11 @@ router.get("/search/:search", function(req, res, next) {
 
 // renders the search page
 router.get("/search", function(req, res, next) {
-    res.render("search", {id: false})
+    res.render("search", {search: false})
+})
+
+router.get("/search/user", function(req, res, next) {
+    
 })
 
 

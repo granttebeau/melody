@@ -91,6 +91,54 @@
     font-weight: 700;
 }
 
+.search-parameters {
+    list-style-type: none;
+    margin: 10px 0;
+    padding: 0;
+}
+
+.search-parameters li {
+    display: inline-block !important;
+    margin: 0 0.83%;
+    width: 18%;
+    height: 40px;
+    position: relative;
+}
+
+.search-parameters label,
+.search-parameters input {
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+}
+.search-parameters input[type="radio"] {
+    opacity: 0.01;
+    z-index: 100;
+}
+
+.search-parameters input[type="radio"]:checked+label,
+.Checked+label {
+    background: #f1935c;
+    color: white;
+    border: none;
+}
+
+.search-parameters label {
+    text-align: center;
+    padding: 3px;
+    border-radius: 3px;
+    border: 1px solid #CCC;
+    cursor: pointer;
+    z-index: 90;
+}
+
+.search-parameters label:hover {
+    background: #DDD;
+}
+
 @media (max-width: 792px) {
     .search-page-span {
         width: 100%;
