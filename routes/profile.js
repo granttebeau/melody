@@ -37,13 +37,11 @@ router.get("/profile", middleware.isLoggedIn, function(req, res) {
 router.get("/profile/:id", middleware.isLoggedIn, function(req, res) {
     User.findById(req.params.id, function(err, user) {
         if (err) {
-            console.log("FIRST" + err)
             return res.redirect("/home")
         }
         if (user) {
             User.findById(req.user._id, function(err, currentUser) {
                 if (err) {
-                    console.log("SECOND")
                     return res.redirect("/home")
                 }
                 var arr = currentUser.following.filter(function(i) {
@@ -52,7 +50,6 @@ router.get("/profile/:id", middleware.isLoggedIn, function(req, res) {
                 let f = arr.length > 0 
                 Post.find({'author.username': user.username}, function(err, posts) {
                     if (err) {
-                        console.log("THIRD")
                         return res.redirect("/home")
                     }
                     res.render("other-profile", {posts: posts, profile: user, f: f})

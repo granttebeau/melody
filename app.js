@@ -73,9 +73,14 @@ app.use(function(req, res, next){
 
  // use each of the routes, defined above
 app.use(IndexRoutes)
+app.use(HomeRoutes)
 app.use(ProfileRoutes)
 app.use(PostRoutes)
-app.use(HomeRoutes)
+
+// renders the home page with posts in chronological order if random url is entered
+app.get("/*", function(req, res) {
+    res.redirect("home")
+})
 
 
 app.listen(process.env.PORT || 8000, process.env.IP);

@@ -2,6 +2,7 @@ var express = require("express")
 var router = express.Router({mergeParams: true})
 
 var Post = require("../models/post")
+var User = require("../models/user")
 var middleware = require("../middleware/index")
 var axios = require("axios")
 
@@ -11,6 +12,37 @@ router.get("/post-info/:id", function(req, res) {
     Post.findById(req.params.id, function(err, post) {
         if (err) console.log(err)
         res.send(post)
+    })
+})
+
+// gets a post by id and displays it 
+router.get("/post/:id", function(req, res) {
+    Post.findById(req.params.id, function(err, post) {
+        if (err) console.log(err)
+        User.findById(req.user._id, function(err, user) {
+            if (err) return next(err);
+            var following = user.following.map(item => item.username)
+            following.push(user.username)
+            Post.find({"author.username": {$in : following}}, function(err, posts) {
+                if (err) console.log(err);
+                var songs = 0;
+                var popular = posts.map(post => post.songTitle)
+                var popularFive = []
+                let song = 0
+                while (songs < 5) {
+                    song = middleware.mode(popular)
+                    if (song) {
+                        popularFive.push(song)
+                    }
+                    popular = popular.filter(s => s !== song)
+                    if (popular.length === 0) {
+                        songs = 5
+                    }
+                    songs ++
+                }
+                res.render("post", {post: post, popular: popularFive, user: user})
+            })
+        })
     })
 })
 
@@ -128,7 +160,6 @@ router.post("/new-post", function(req, res) {
         if (songName.split(",").length === 2) {
             songName = songName.split(",")[0]
         }
-        console.log(songName)
         var post = new Post({
             content: content,
             song: songLink,

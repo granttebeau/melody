@@ -86,9 +86,9 @@ document.querySelector("#search-input").addEventListener("input", function() {
     }
 })
 
-document.querySelector("#search-input").addEventListener("click", function() {
-    if (this.value === "") {
-        console.log(document.querySelector(".search-display-items"))
-    }
-})
+// document.querySelector("#search-input").addEventListener("click", function() {
+//     if (this.value === "") {
+//         console.log(document.querySelector(".search-display-items"))
+//     }
+// })
 

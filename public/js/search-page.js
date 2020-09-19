@@ -21,10 +21,17 @@ document.querySelector("#search-page-input").addEventListener("input", function(
 })
 
 document.querySelector("#user-search").addEventListener("click", function() {
+    handleCheck("user")
     handleSearch()
 })
 
 document.querySelector("#post-search").addEventListener("click", function() {
+    handleCheck("post")
+    handleSearch()
+})
+
+document.querySelector("#song-search").addEventListener("click", function() {
+    handleCheck("song")
     handleSearch()
 })
 
@@ -32,8 +39,30 @@ function getSearchParameter() {
     if (document.querySelector("#user-search").checked) {
         return "user"
     }
+    else if (document.querySelector("#song-search").checked) {
+        return "song"
+    }
     else {
         return "post"
+    }
+}
+
+
+function handleCheck(input) {
+    if (input === "user") {
+        document.querySelector("#user-search").checked = true;
+        document.querySelector("#post-search").checked = false;
+        document.querySelector("#song-search").checked = false;
+    }
+    else if (input === "song") {
+        document.querySelector("#user-search").checked = false;
+        document.querySelector("#post-search").checked = false;
+        document.querySelector("#song-search").checked = true;
+    }
+    else {
+        document.querySelector("#user-search").checked = false;
+        document.querySelector("#post-search").checked = true;
+        document.querySelector("#song-search").checked = false;
     }
 }
 
@@ -132,6 +161,38 @@ function searchPage(items) {
 
                 var content = document.createElement("P")
                 result[i].content.length > 30 ? content.textContent = result[i].content.slice(0, 30) + "..." : content.textContent = result[i].content
+                
+                text.appendChild(username)
+                text.appendChild(content)
+                li.appendChild(text)
+                a.appendChild(li)
+                listItems.appendChild(a)
+            }
+          }
+          else {
+            document.querySelector(".search-page-display-items-user").classList.add("d-none")
+            document.querySelector(".search-page-display-items-post").classList.remove("d-none")
+            var result = res.posts
+            var num = result.length
+            var listItems = document.querySelector(".search-page-display-items-post")
+            while (listItems.firstChild) {
+                listItems.removeChild(listItems.firstChild)
+            }
+            for (var i = 0; i < num; i++) {
+                var a = document.createElement("A");
+                a.href = "/post/" + result[i]._id;
+                console.log(a.href)
+                var li = document.createElement("LI"); 
+            
+                var text = document.createElement("DIV")
+                text.classList.add("search-page-username")
+    
+                var username = document.createElement("P")
+                username.classList.add("username")
+                username.textContent = result[i].author.username + ":"
+
+                var content = document.createElement("P")
+                result[i].content.length > 30 ? content.textContent = result[i].songTitle.slice(0, 30) + "..." : content.textContent = result[i].songTitle
                 
                 text.appendChild(username)
                 text.appendChild(content)

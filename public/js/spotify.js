@@ -51,13 +51,11 @@ var spotifyFunction = function (song, songLink, first, second, third, fourth, fi
     
 
     var qs = createQueryString(song.value)
-    console.log(qs)
     if (qs === "") {
       if (song == editSong) {
       }
       return list.classList.add("display-none")
     }
-    console.log(song.value)
     axios.get("https://api.spotify.com/v1/search" + qs, op).then((response) => {
       list.classList.remove("display-none")
       first.textContent = response.data.tracks.items[0].name + ", " + response.data.tracks.items[0].artists[0].name

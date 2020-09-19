@@ -15,7 +15,3 @@ window.addEventListener("resize", () => {
     styleProfilePage()
 })
 
-window.onscroll = function() {
-    console.log("HELLO")
-}
-

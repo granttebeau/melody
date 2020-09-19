@@ -28,7 +28,6 @@ router.get('/register/:id', function(req, res) {
 })
 
 router.post("/register", function(req, res) {
-    console.log(req.params)
     var username = req.body.username
     var password = req.body.password
     var fullName = req.body.fullName

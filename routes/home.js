@@ -49,7 +49,6 @@ router.post('/search', async function(req, res, next) {
 // searches for users by username, and sends the list
 router.post('/search-page/user', async function(req, res, next) {
     var text = req.body.text
-    console.log(text)
     User.find({'username':  { $regex: text, $options: "i" }}, function(err, users) {
         if (err) return next(err);
         var content = {
@@ -60,10 +59,23 @@ router.post('/search-page/user', async function(req, res, next) {
     })
 })
 
-// searches for users by username, and sends the list
+// searches for posts by content, and sends the list
 router.post('/search-page/post', async function(req, res, next) {
     var text = req.body.text
     Post.find({'content':  { $regex: text, $options: "i" }}, function(err, posts) {
+        if (err) return next(err);
+        var content = {
+            posts: posts,
+            id: req.user._id
+        }
+        res.send(content)
+    })
+})
+
+// searches for posts by song, and sends the list
+router.post('/search-page/song', async function(req, res, next) {
+    var text = req.body.text
+    Post.find({'songTitle':  { $regex: text, $options: "i" }}, function(err, posts) {
         if (err) return next(err);
         var content = {
             posts: posts,

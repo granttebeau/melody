@@ -3,7 +3,7 @@
     <div class="row justify-content-center">
         <div class="col-12 col-lg-4 mb-5">
             <div id="home-screen-content">
-                <h3>What your friends are listening to:</h3>
+                <h3>What people are listening to:</h3>
                 <ul>
                     <% for (var i = 0; i < popular.length; i++) { %>
                         <li class="popular-post"><%= i + 1 %>. <%= popular[i] %></li>
@@ -12,8 +12,9 @@
             </div>
         </div>
         <div class="col-12 col-lg-6">
-            <%- include("partials/post-form") %>
-            <%- include("partials/post-list", {post: posts, user: user}) %>
+            <div class="post">
+                <%- include("partials/display-post", {post: post, user: user, list: false}) %>
+            </div>
         </div>
     </div>
 </div>
