@@ -1,8 +1,8 @@
 <ul class="posts">
     <% posts.reverse().forEach(post => {%>
         <% if (post.content && post.song)  { %> 
-            <li class="post">
-                <%- include("display-post", {post: post, user: user, list: true}) %>
+            <li class="post" id="<%= post._id %>" > 
+                <%- include("display-post", {post: post, user: user}) %>
             </li>
         <% } %>
     <% })%>

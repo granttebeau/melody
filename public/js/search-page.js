@@ -201,8 +201,9 @@ function searchPage(items) {
                 listItems.appendChild(a)
             }
           }
-    }).catch(error => {
-        console.log(error)
+    }).catch(err => {
+        console.log("ERROR")
+        console.log(err)
     })
 }
 

@@ -15,6 +15,9 @@ edit.forEach(post => {
                 document.querySelector("#edit-text").value = result.content
                 var song = result.songSearch.split(",")
                 document.querySelector("#edit-song").value = song
+            }).catch(err => {
+                console.log("ERROR edit")
+                console.log(err)
             })
         
         document.querySelector(".edit-post-form").action = "/update-post/" + post.id + "?_method=PUT"

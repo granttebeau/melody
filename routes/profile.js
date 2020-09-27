@@ -33,6 +33,34 @@ router.get("/profile", middleware.isLoggedIn, function(req, res) {
     })
 })
 
+// renders the edit profile page of the current user
+router.get("/edit-profile", middleware.isLoggedIn, function(req, res) {
+    res.render("partials/edit-profile")
+})
+
+router.post("/edit-profile", middleware.isLoggedIn, function(req, res) {
+    User.findById(req.user._id, function(err, user) {
+        if (err) {
+            return res.redirect("/profile");
+        }
+        user.fullName = req.body.fullName;
+        user.username = req.body.username;
+        user.bio = req.body.bio;
+        user.save();
+        Post.find({'author.username': req.user.username}, function(err, posts) {
+            if (err) {
+                return res.redirect("/profile")
+            }
+            posts.forEach(post => {
+                post.author.username = req.body.username;
+                post.author.name = req.body.fullName;
+                post.save();
+            })
+        })
+        return res.redirect("profile")
+    })
+})
+
 // renders the profile page of another user
 router.get("/profile/:id", middleware.isLoggedIn, function(req, res) {
     User.findById(req.params.id, function(err, user) {
