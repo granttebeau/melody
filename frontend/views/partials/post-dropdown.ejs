@@ -1,0 +1,9 @@
+<div class="post-dropdown">
+    <i  class="post-dropdown-arrow fas fa-angle-down"></i>
+    <ul class="post-dropdown-arrow-list display-none rounded">
+        <% if (post.author.id.equals(user._id)) { %>
+            <a href="#" class="edit-post" id="<%= post.id %>"><li>Edit post</li></a>
+            <a href="/delete-post/<%= post._id %>"><li>Delete post</li></a>
+        <% } %>
+    </ul>
+</div>

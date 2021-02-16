@@ -1,0 +1,17 @@
+<%- include("partials/header") %>
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-12 col-lg-4 mb-5">
+            <%- include("partials/side-tab", {popular: popular}) %>
+        </div>
+        <div class="col-12 col-lg-6">
+            <%- include("partials/post-form") %>
+            <%- include("partials/post-list", {post: posts, user: user}) %>
+        </div>
+    </div>
+</div>
+<script src="/js/script.js"></script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script type="module" src="/js/spotify.js"></script>
+<script src="/js/homepage.js"></script>
+<%- include("partials/footer") %>

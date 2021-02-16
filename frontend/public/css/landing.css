@@ -1,0 +1,75 @@
+html, body {
+    height: 100%;
+    width: 100%;
+    color: #30475e;
+}
+
+#image-background {
+    width: 50%;
+    height: 100%;
+    background-color: #fcf8e8;
+    float: left;
+}
+
+img {
+    margin: 25% 0 0 25%;
+    width: 50%;
+}
+
+.landing-info {
+    width: 50%;
+    height: 100%;
+    float: left;
+}
+
+.landing-info .container {
+    margin-top: 29%;
+}
+
+textarea {
+    min-height: 60px;
+}
+
+.btn-primary {
+    background-color: #f1935c;
+    border: none;
+}
+
+.btn-primary:hover {
+    background-color: #dc6622;
+    transition: .5s;
+}
+
+.inputfile {
+	width: 0.1px;
+	height: 0.1px;
+	opacity: 0;
+	overflow: hidden;
+	position: absolute;
+	z-index: -1;
+}
+
+label[for="image"] {
+    font-size: 1.1em;
+    border: 1px solid #f1935c;
+    padding: 5px;
+}
+label[for="image"]:hover {
+    transition: .2s;
+    background-color: #f1935c;
+    color: white;
+}
+
+.inputfile + label {
+    color: #f1935c;
+    background-color: white;
+    display: inline-block;
+}
+
+.inputfile + label {
+	cursor: pointer; /* "hand" cursor */
+}
+.inputfile:focus + label {
+	outline: 1px dotted #000;
+	outline: -webkit-focus-ring-color auto 5px;
+}

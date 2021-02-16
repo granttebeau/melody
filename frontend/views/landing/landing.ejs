@@ -1,0 +1,30 @@
+<%- include("../partials/landing-header") %>
+    <div class="image-background m-0" id="image-background">
+        <img src="images/logo.png" alt="">
+        <h4 class="text-center"><i class="fas fa-music"></i> Share your music, today </h4>
+    </div>
+
+    <div class="landing-info">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-10 col-md-5">
+                    <h2 class="text-left my-3">See what music your friends are listening to:</h2>
+                    <form action="/login" method="POST">
+                        <div class="form-group">
+                            <input class="form-control" type="text" placeholder="Username" name="username">
+                        </div>
+                        <div class="form-group">
+                            <input class="form-control" type="password" placeholder="Password" name="password">
+                        </div>
+                        <div class="form-group">
+                            <button class="btn btn-primary btn-block ">Log in</button>
+                        </div>
+                    </form>
+                    <p>Don't have an account? Register <a href="/register">here</a> </p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+</body>
+</html>
