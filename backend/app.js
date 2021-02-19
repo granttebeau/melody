@@ -18,6 +18,10 @@ var ProfileRoutes = require("./routes/profile")
 var PostRoutes = require("./routes/post")
 var HomeRoutes = require("./routes/home")
 
+
+var cors = require('cors');
+app.use(cors());
+
 // sets up the MongoDB
 var url = "mongodb://localhost/melody"
 // var url = "mongodb+srv://public:0vRokIdC25tC532f@melody.1dhd4.mongodb.net/Melody?retryWrites=true&w=majority"
@@ -76,7 +80,7 @@ app.use(PostRoutes)
 // renders the home page with posts in chronological order if random url is entered
 app.get("/*", function(req, res) {
     // res.redirect("home")  
-    res.send('hello');  
+    res.send('what it do baby');  
 })
 
 

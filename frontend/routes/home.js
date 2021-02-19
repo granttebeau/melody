@@ -8,11 +8,11 @@ var middleware = require("../middleware/index")
 // renders the home page with posts in chronological order
 router.get("/home", middleware.isLoggedIn, function(req, res) {
     User.findById(req.user._id, function(err, user) {
-        if (err) return res.status(400).send(err)
+        if (err) return next(err);
         var following = user.following.map(item => item.username)
         following.push(user.username)
         Post.find({"author.username": {$in : following}}, function(err, posts) {
-            if (err) return res.status(400).send(err)
+            if (err) console.log(err);
             var songs = 0;
             var popular = posts.map(post => post.songTitle)
             var popularFive = []
@@ -28,36 +28,36 @@ router.get("/home", middleware.isLoggedIn, function(req, res) {
                 }
                 songs ++
             }
-            return res.status(200).send({posts: posts, popular: popularFive})
+            res.render("home", {posts: posts, popular: popularFive})
         })
     })
 })
 
-// // searches for users by username, and sends the list
-// router.post('/search', async function(req, res, next) {
-//     var text = req.body.text
-//     User.find({'username':  { $regex: text, $options: "i" }}, function(err, users) {
-//         if (err) {
-//             return res.status(400).send(err)
-//         }
-//         var content = {
-//             users: users,
-//             id: req.user._id
-//         }
-//         return res.status(200).send(content);
-//     })
-// })
+// searches for users by username, and sends the list
+router.post('/search', async function(req, res, next) {
+    var text = req.body.text
+    User.find({'username':  { $regex: text, $options: "i" }}, function(err, users) {
+        if (err) {
+            return next(err);
+        }
+        var content = {
+            users: users,
+            id: req.user._id
+        }
+        res.send(content)
+    })
+})
 
 // searches for users by username, and sends the list
 router.post('/search-page/user', async function(req, res, next) {
     var text = req.body.text
     User.find({'username':  { $regex: text, $options: "i" }}, function(err, users) {
-        if (err) return res.status(400).send(err)
+        if (err) return next(err);
         var content = {
             users: users,
             id: req.user._id
         }
-        return res.status(200).send(content);
+        res.send(content)
     })
 })
 
@@ -65,20 +65,7 @@ router.post('/search-page/user', async function(req, res, next) {
 router.post('/search-page/post', async function(req, res, next) {
     var text = req.body.text
     Post.find({'content':  { $regex: text, $options: "i" }}, function(err, posts) {
-        if (err) return res.status(400).send(err)
-        var content = {
-            posts: posts,
-            id: req.user._id
-        }
-        return res.status(200).send(content);
-    })
-})
-
-// searches for posts by song, and sends the list
-router.post('/search-page/song', async function(req, res, next) {
-    var text = req.body.text
-    Post.find({'songTitle':  { $regex: text, $options: "i" }}, function(err, posts) {
-        if (err) return res.status(400).send(err)
+        if (err) return next(err);
         var content = {
             posts: posts,
             id: req.user._id
@@ -87,20 +74,33 @@ router.post('/search-page/song', async function(req, res, next) {
     })
 })
 
-// // renders the search page
-// router.get("/search/:search", function(req, res, next) {
-//     var search = req.params.search
-//     return res.render("search", {search: search})
-// })
+// searches for posts by song, and sends the list
+router.post('/search-page/song', async function(req, res, next) {
+    var text = req.body.text
+    Post.find({'songTitle':  { $regex: text, $options: "i" }}, function(err, posts) {
+        if (err) return next(err);
+        var content = {
+            posts: posts,
+            id: req.user._id
+        }
+        res.send(content)
+    })
+})
 
-// // renders the search page
-// router.get("/search", function(req, res, next) {
-//     res.render("search", {search: false})
-// })
+// renders the search page
+router.get("/search/:search", function(req, res, next) {
+    var search = req.params.search
+    return res.render("search", {search: search})
+})
 
-// router.get("/search/user", function(req, res, next) {
+// renders the search page
+router.get("/search", function(req, res, next) {
+    res.render("search", {search: false})
+})
+
+router.get("/search/user", function(req, res, next) {
     
-// })
+})
 
 
 module.exports = router

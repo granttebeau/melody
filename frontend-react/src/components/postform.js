@@ -1,0 +1,35 @@
+import { React, Component } from "react";
+
+import {appendScript} from '../js/utils';
+
+export default class PostForm extends Component {
+    
+    componentDidMount() {
+    }
+
+    render() {
+        return (
+            <form action="/new-post" method="POST" class="post-form">
+                <div class="form-group">
+                    <input class="form-control" type="text" placeholder="What song's on your mind?" name="content" required />
+                </div>
+                <div class="form-group">
+                    <input class="form-control song" autocomplete="off" placeholder="Search for your song" name="song" required list="songs-list"/>
+                    <ul class="song-display-items rounded-bottom display-none">
+                        <li class="first"></li>
+                        <li class="second"></li>
+                        <li class="third"></li>
+                        <li class="fourth"></li>
+                        <li class="fifth"></li>
+                    </ul>
+
+                </div>
+                <input type="hidden" name="songlink" value="" required />
+                <p class="lead error-message display-none">Must select a song from the dropdown menu</p>
+                <div class="form-group">
+                    <input type="submit" value="Post" class="btn btn-primary btn-block"/>
+                </div>
+            </form>
+        );
+    }
+}
