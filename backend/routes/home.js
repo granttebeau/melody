@@ -7,6 +7,7 @@ var middleware = require("../middleware/index")
 
 // renders the home page with posts in chronological order
 router.get("/home", middleware.isLoggedIn, function(req, res) {
+    console.log(req);
     User.findById(req.user._id, function(err, user) {
         if (err) return res.status(400).send(err)
         var following = user.following.map(item => item.username)

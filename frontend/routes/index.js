@@ -10,7 +10,7 @@ var User = require("../models/user")
 var passport = require("passport") 
 var middleware = require("../middleware/index")
 
-router.get("/", middleware.isNotLoggedIn, function(req, res) {
+router.get("/", function(req, res) {
     res.render("landing/landing")
 })
 

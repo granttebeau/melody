@@ -25,9 +25,10 @@ router.get('/profile/:id/picture', function(req,res,next) {
 
 // renders the profile page of the current user
 router.get("/profile", middleware.isLoggedIn, function(req, res) {
+    console.log("PROFILE");
     Post.find({'author.username': req.user.username}, function(err, posts) {
         if (err) {
-            return res.redirect("/profile")
+            return res.redirect("/")
         }
         res.render("profile", {posts: posts})
     })
@@ -109,22 +110,22 @@ router.get("/follow/:id", function(req, res) {
                 user: user,
                 username: user.username
             }
-            if (curUserArr.length > 0) {
-                currentUser.following.splice(currentUser.following.indexOf(newUserObj), 1);
-            }
-            else {
-                currentUser.following.push(newUserObj)
-            }
+            // if (curUserArr.length > 0) {
+            //     currentUser.following.splice(currentUser.following.indexOf(newUserObj), 1);
+            // }
+            // else {
+            //     currentUser.following.push(newUserObj)
+            // }
 
             var userArr = user.followers.filter(function(i) {
                 return i._id.equals(currentUser._id)
             })
-            if (userArr.length > 0) {
-                user.followers.splice(user.followers.indexOf(currentUser), 1);
-            }
-            else {
-                user.followers.push(currentUser)
-            }
+            // if (userArr.length > 0) {
+            //     user.followers.splice(user.followers.indexOf(currentUser), 1);
+            // }
+            // else {
+            //     user.followers.push(currentUser)
+            // }
             currentUser.save()
             user.save()
             res.redirect("/profile/" + req.params.id)

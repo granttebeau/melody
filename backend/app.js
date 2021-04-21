@@ -23,7 +23,7 @@ var cors = require('cors');
 app.use(cors());
 
 // sets up the MongoDB
-var url = "mongodb://localhost/melody"
+var url = require("./config/keys").mongoURI;
 // var url = "mongodb+srv://public:0vRokIdC25tC532f@melody.1dhd4.mongodb.net/Melody?retryWrites=true&w=majority"
 mongoose.connect(url, { useUnifiedTopology: true, useNewUrlParser: true })
 
@@ -39,7 +39,7 @@ app.use(methodOverride("_method"))
 
 // configuring the local/public MongoDB to be used with the session
 const store = new MongoDBStore({
-    uri: "mongodb://localhost/melody",
+    uri: url,
     // uri: "mongodb+srv://public:0vRokIdC25tC532f@melody.1dhd4.mongodb.net/Melody?retryWrites=true&w=majority",
     collection: 'users'
 });
@@ -58,9 +58,12 @@ app.use(session({
 app.use(passport.initialize())
 app.use(passport.session())
 
-passport.use(new LocalStrategy(User.authenticate()))
-passport.serializeUser(User.serializeUser())
-passport.deserializeUser(User.deserializeUser())
+// passport.use(new LocalStrategy(User.authenticate()))
+// passport.serializeUser(User.serializeUser())
+// passport.deserializeUser(User.deserializeUser())
+
+require("./config/passport")(passport);
+
 mongoose.set('useFindAndModify', false);
 
 
@@ -78,10 +81,10 @@ app.use(ProfileRoutes)
 app.use(PostRoutes)
 
 // renders the home page with posts in chronological order if random url is entered
-app.get("/*", function(req, res) {
-    // res.redirect("home")  
-    res.send('what it do baby');  
-})
+// app.get("/*", function(req, res) {
+//     // res.redirect("home")  
+//     res.send('what it do baby');  
+// })
 
 
-app.listen(process.env.PORT || 3000, process.env.IP);
+app.listen(process.env.PORT || 4200, process.env.IP);

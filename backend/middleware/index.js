@@ -30,7 +30,7 @@ function mode(arr) {
 // used to display landing page
 function isNotLoggedIn(req, res, next) {
     if (req.isAuthenticated()) {
-        return res.redirect("/profile");
+        return res.status(400).json({ message: "User logged in" })
     }
     next()
 }
@@ -41,7 +41,7 @@ function isLoggedIn(req, res, next) {
     if (req.isAuthenticated()) {
         return next();
     }
-    res.redirect("/")
+    res.status(400).json({ message: "Not logged in" })
 }
 
 // creates the query string used with the Spotify API calls

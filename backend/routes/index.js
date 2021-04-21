@@ -3,7 +3,10 @@ var router = express.Router({mergeParams: true})
 
 var multer = require("multer"),
     upload = multer({ dest: "uploads/" }),
-    fs = require("fs")
+    fs = require("fs"),
+    bcrypt = require("bcryptjs"),
+    keys = require("../config/keys");
+    jwt = require("jsonwebtoken");
 
 var User = require("../models/user")
 
@@ -18,18 +21,29 @@ router.get('/register/:id', function(req, res) {
     })
 })
 
-router.post("/register", function(req, res) {
-    var username = req.body.username
-    var password = req.body.password
-    var fullName = req.body.fullName
-
-    User.register(new User({username: username, fullName: fullName, following: []}), password, function(err, user) {
-        if (err) {
-            return res.status(400).send({ error: err.message });
+router.post("/register", (req, res) => {
+    console.log(req.body);
+    User.findOne({ username: req.body.username }).then(user => {
+        if (user) {
+            return res.status(400).json({ email: "Username already exists" });
         }
-        passport.authenticate("local")(req, res, function() {
-            return res.status(200).send(user)
-        })
+        else {
+            const newUser = new User({
+                username: req.body.username,
+                fullName: req.body.name,
+                following: [],
+                password: req.body.password
+            });
+            bcrypt.genSalt(10, (err, salt) => {
+                bcrypt.hash(newUser.password, salt, (err, hash) => {
+                    if (err) throw err;
+                    newUser.password = hash;
+                    newUser.save()
+                        .then(user => res.json(user))
+                        .catch(err => console.log(err));
+                })
+            })
+        }
     })
 })
 
@@ -49,12 +63,37 @@ router.post('/register/:id', upload.single('image'), function(req, res) {
     })
 })
 
-router.post('/login', passport.authenticate('local'), (req, res) => {
-    res.statusCode = 200;
-    res.setHeader('Content-Type', 'application/json');
-    res.json({success: true, status: 'You are successfully logged in!'});
-  });
+router.post("/login", (req, res) => {
+    let username = req.body.username,
+        password = req.body.password;
+    User.findOne({ username: username}).then(user => {
+        if (!user) {
+            return res.status(404).json({ emailnotfound: "Username not found" });
+        }
 
+        bcrypt.compare(password, user.password).then(matched => {
+            if (matched) {
+                const payload = {
+                    username: user.username,
+                    fullName: user.fullName
+                }
+
+                jwt.sign(payload, keys.secretOrKey, { expiresIn: 31556926 }, (err, token) => {
+                    res.json({
+                        success: true,
+                        token: token
+                    })
+                })
+            }
+        })
+    })
+})
+// router.use('/login', passport.authenticate('local'), (req, res) => {
+//     console.log(req);
+//     res.statusCode = 200;
+//     res.setHeader('Content-Type', 'application/json');
+//     res.send({token: "token123"});
+//   });
 
 router.post("/logout", function(req, res) {
     req.logout()
