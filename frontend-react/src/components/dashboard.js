@@ -1,26 +1,23 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { connect } from "react-redux";
+import { connect, useDispatch } from "react-redux";
 import { logoutUser } from "../actions/authActions";
-class Dashboard extends Component {
-  onLogoutClick = (e) => {
+import { useHistory } from "react-router-dom";
+
+let Dashboard = (props) => {
+  let history = useHistory();
+  let dispatch = useDispatch();
+  let onLogoutClick = (e) => {
     e.preventDefault();
-    this.props.logoutUser();
+    dispatch(logoutUser());
+    history.push('/');
   };
-  render() {
-    const { user } = this.props.auth;
-    console.log(this.props);
+    const { user } = props.auth;
     return (
       <div style={{ height: "75vh" }} className="container valign-wrapper">
         <div className="row">
           <div className="col s12 center-align">
-            <h4>
-              <b>Hey there,</b> {user.fullName.split(" ")[0]}
-              <p className="flow-text grey-text text-darken-1">
-                You are logged into a full-stack{" "}
-                <span style={{ fontFamily: "monospace" }}>MERN</span> app 👏
-              </p>
-            </h4>
+            <h1>HELLO</h1>
             <button
               style={{
                 width: "150px",
@@ -28,7 +25,7 @@ class Dashboard extends Component {
                 letterSpacing: "1.5px",
                 marginTop: "1rem",
               }}
-              onClick={this.onLogoutClick}
+              onClick={onLogoutClick}
               className="btn btn-large waves-effect waves-light hoverable blue accent-3"
             >
               Logout
@@ -37,7 +34,6 @@ class Dashboard extends Component {
         </div>
       </div>
     );
-  }
 }
 Dashboard.propTypes = {
   logoutUser: PropTypes.func.isRequired,
