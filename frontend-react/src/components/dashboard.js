@@ -17,7 +17,7 @@ let Dashboard = (props) => {
       <div style={{ height: "75vh" }} className="container valign-wrapper">
         <div className="row">
           <div className="col s12 center-align">
-            <h1>HELLO</h1>
+            <h1>Hello, {user.fullName}</h1>
             <button
               style={{
                 width: "150px",

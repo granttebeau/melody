@@ -1,8 +1,8 @@
-import React, { Component, useState } from "react";
-import { Link, useHistory } from "react-router-dom";
+import React, { useState } from "react";
+import { useHistory } from "react-router-dom";
 import PropTypes from "prop-types";
 import { connect, useDispatch } from "react-redux";
-import { loginUser, registerUser } from "../../actions/authActions";
+import { registerUser } from "../../actions/authActions";
 import "./landing.css";
 
 let Register = (props) => {

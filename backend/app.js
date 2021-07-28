@@ -8,7 +8,8 @@ MongoDBStore = require('connect-mongodb-session')(session),
 mongoose = require("mongoose"),
 passport = require("passport"),
 LocalStrategy = require("passport-local"),
-path = require("path")
+path = require("path"),
+bcrypt = require('bcrypt');
 
 var User = require("./models/user")
 
@@ -59,8 +60,38 @@ app.use(passport.initialize())
 app.use(passport.session())
 
 // passport.use(new LocalStrategy(User.authenticate()))
-// passport.serializeUser(User.serializeUser())
-// passport.deserializeUser(User.deserializeUser())
+passport.use(new LocalStrategy(
+    function(username, password, done) {
+      User.findOne({ username: username }, function (err, user) {
+        if (err) { return done(err); }
+        if (!user) {
+          return done(null, false, { message: 'Incorrect username.' });
+        }
+        bcrypt.compare(password, user.password).then(matched => {
+            if (matched) {
+                return done(null, user);
+            }
+            else {
+                return done(null, false, { message: 'Incorrect password.' }); 
+            }
+        })
+        // if (!user.validPassword(password)) {
+        //   return done(null, false, { message: 'Incorrect password.' });
+        // }
+        // return done(null, user);
+      });
+    }
+  ));
+// passport.serializeUser((user, done) => {
+//     done(null, user.username);
+// })
+passport.serializeUser(User.serializeUser())
+passport.deserializeUser(User.deserializeUser())
+// passport.deserializeUser((username, done) => {
+//     User.find({'username': username}, (err, user) => {
+//         done(err, user);
+//     })
+// })
 
 require("./config/passport")(passport);
 

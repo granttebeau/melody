@@ -7,11 +7,11 @@ import { Provider } from "react-redux";
 import store from "./store";
 import Navbar from "./components/navbar";
 import Landing from "./components/landing/landing";
-import Register from "./components/landing/register";
-import Login from "./components/landing/login";
 import PrivateRoute from "./components/privateRoute";
-import Dashboard from "./components/dashboard";
+import HomeRoute from './components/homeRoute';
+import Dashboard from "./components/home";
 import "./App.css";
+import Profile from "./components/profile";
 // Check for token to keep user logged in
 if (localStorage.jwtToken) {
   // Set auth token header auth
@@ -37,7 +37,7 @@ class App extends Component {
       <Provider store={store}>
         <Router>
           <Switch>
-            <Route exact path="/" component={Landing} />
+            <HomeRoute exact path="/"/>
             <Route exact path="/register" component={Landing} />
 
             <div className="App">
@@ -46,6 +46,7 @@ class App extends Component {
               {/* <Route exact path="/login" component={Login} /> */}
               <Switch>
                 <PrivateRoute exact path="/dashboard" component={Dashboard} />
+                <PrivateRoute exact path="/profile/:username" component={Profile} />
               </Switch>
             </div>
           </Switch>

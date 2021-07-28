@@ -36,9 +36,9 @@ function isNotLoggedIn(req, res, next) {
 }
 
 
-// checks if the user is logged in, else renders login page
+// checks if the user is logged in, 
 function isLoggedIn(req, res, next) {
-    if (req.isAuthenticated()) {
+    if (!!req.headers.authorization) {
         return next();
     }
     res.status(400).json({ message: "Not logged in" })

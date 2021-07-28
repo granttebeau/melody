@@ -1,5 +1,5 @@
-import React, { Component, useEffect, useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { useLocation } from "react-router-dom";
 import Login from './login';
 import Register from './register'
 import './landing.css';

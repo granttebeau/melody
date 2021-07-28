@@ -22,7 +22,6 @@ router.get('/register/:id', function(req, res) {
 })
 
 router.post("/register", (req, res) => {
-    console.log(req.body);
     User.findOne({ username: req.body.username }).then(user => {
         if (user) {
             return res.status(400).json({ email: "Username already exists" });
@@ -63,29 +62,30 @@ router.post('/register/:id', upload.single('image'), function(req, res) {
     })
 })
 
-router.post("/login", (req, res) => {
+router.post("/login", passport.authenticate('local'), (req, res) => {
     let username = req.body.username,
         password = req.body.password;
+
+        
     User.findOne({ username: username}).then(user => {
         if (!user) {
             return res.status(404).json({ emailnotfound: "Username not found" });
         }
-
-        bcrypt.compare(password, user.password).then(matched => {
-            if (matched) {
-                const payload = {
-                    username: user.username,
-                    fullName: user.fullName
-                }
-
-                jwt.sign(payload, keys.secretOrKey, { expiresIn: 31556926 }, (err, token) => {
-                    res.json({
-                        success: true,
-                        token: token
-                    })
-                })
-            }
+        const payload = {
+            username: user.username,
+            fullName: user.fullName,
+            following: user.following,
+            followers: user.followers
+        }
+        jwt.sign(payload, keys.secretOrKey, { expiresIn: 31556926 }, (err, token) => {
+            res.json({
+                success: true,
+                token: token
+            })
         })
+    }).catch(error => {
+        console.log(error);
+        res.json({success: false, message: error.message}).send(400);
     })
 })
 // router.use('/login', passport.authenticate('local'), (req, res) => {

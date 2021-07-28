@@ -1,5 +1,5 @@
-import React, { Component, useState } from "react";
-import { Link, useHistory } from "react-router-dom";
+import React, { useState } from "react";
+import { useHistory } from "react-router-dom";
 import PropTypes from "prop-types";
 import { connect, useDispatch } from "react-redux";
 import { loginUser } from "../../actions/authActions";

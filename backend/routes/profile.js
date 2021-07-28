@@ -4,13 +4,22 @@ var router = express.Router({mergeParams: true})
 var User = require("../models/user")
 var Post = require("../models/post")
 var middleware = require("../middleware/index")
+var TimeAgo = require('javascript-time-ago');
+var en = require('javascript-time-ago/locale/en');
+
+TimeAgo.addDefaultLocale(en)
+
+// Create formatter (English).
+const timeAgo = new TimeAgo('en-US')
 
 // sends the user's profile picture- used to display profile pictures on posts/the profile page
 router.get("/profile/picture", function(req, res, next) {
-    User.findById(req.user._id, function(err, user) {
+    User.findById(req.session.user._id, function(err, user) {
         if (err) return res.status(400).send(err)
-        let {contentType, data} = user.image;
-        return res.status(200).contentType(contentType).send(data);
+        res.status(200).send({});
+        // let {contentType, data} = user.image;
+        // console.log(user);
+        // return res.status(200).contentType(contentType).send(data);
     })
 })
 
@@ -24,8 +33,8 @@ router.get('/profile/:id/picture', function(req,res,next) {
 });
 
 // renders the profile page of the current user
-router.get("/profile", middleware.isLoggedIn, function(req, res) {
-    Post.find({'author.username': req.user.username}, function(err, posts) {
+router.get("/profile/:username", middleware.isLoggedIn, function(req, res) {
+    Post.find({'author.username': req.params.username}, function(err, posts) {
         if (err) {
             return res.status(400).send(err)
         }
@@ -58,34 +67,34 @@ router.post("/edit-profile", middleware.isLoggedIn, function(req, res) {
 })
 
 // renders the profile page of another user
-router.get("/profile/:id", middleware.isLoggedIn, function(req, res) {
-    User.findById(req.params.id, function(err, user) {
-        if (err) {
-            return res.status(400).send(err)
-        }
-        if (user) {
-            User.findById(req.user._id, function(err, currentUser) {
-                if (err) {
-                    return res.status(400).send(err)
-                }
-                var arr = currentUser.following.filter(function(i) {
-                    return i.user.equals(user._id)
-                })
-                let f = arr.length > 0 
-                Post.find({'author.username': user.username}, function(err, posts) {
-                    if (err) {
-                        return res.status(400).send(err)
-                    }
-                    return res.status(200).send({posts: posts, profile: user, f: f}); 
-                })
-            })
-        } 
-        else {
-            return res.status(404).send(err)
-        }
+// router.get("/profile/:id", middleware.isLoggedIn, function(req, res) {
+//     User.findById(req.params.id, function(err, user) {
+//         if (err) {
+//             return res.status(400).send(err)
+//         }
+//         if (user) {
+//             User.findById(req.user._id, function(err, currentUser) {
+//                 if (err) {
+//                     return res.status(400).send(err)
+//                 }
+//                 var arr = currentUser.following.filter(function(i) {
+//                     return i.user.equals(user._id)
+//                 })
+//                 let f = arr.length > 0 
+//                 Post.find({'author.username': user.username}, function(err, posts) {
+//                     if (err) {
+//                         return res.status(400).send(err)
+//                     }
+//                     return res.status(200).send({posts: posts, profile: user, f: f}); 
+//                 })
+//             })
+//         } 
+//         else {
+//             return res.status(404).send(err)
+//         }
         
-    })
-})
+//     })
+// })
 
 // handles the follow/unfollow functionality
 router.get("/follow/:id", function(req, res) {

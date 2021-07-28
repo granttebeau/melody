@@ -6,14 +6,15 @@ import {
   SET_CURRENT_USER,
   USER_LOADING
 } from "./types";
-import { useHistory } from "react-router-dom";
 
 // import history from "../utils/history";
 // Register User
 export const registerUser = (userData, history) => dispatch => {
   axios
     .post("/register", userData)
-    .then(res => history.push("/")) // re-direct to login on successful register
+    .then(res => {
+      dispatch(loginUser({username: userData.username, password: userData.password}, history));
+    }) // re-direct to login on successful register
     .catch(err =>
       dispatch({
         type: GET_ERRORS,
@@ -24,7 +25,6 @@ export const registerUser = (userData, history) => dispatch => {
 
 // Login - get user token
 export const loginUser = (userData, history) => dispatch => {
-  console.log(userData);
   axios
     .post("/login", userData)
     .then(res => {
@@ -37,12 +37,15 @@ export const loginUser = (userData, history) => dispatch => {
       // Set current user
       // axios.get
       dispatch(setCurrentUser(decoded));
+      
       history.push("/dashboard");
-    }).catch((e) =>
+    }).catch((e) =>{
+    console.log("ERROR", e);
       dispatch({
         type: GET_ERRORS,
         payload: e
       })
+    }
     );
 };
 // Set logged in user

@@ -1,3 +1,11 @@
 export const GET_ERRORS = "GET_ERRORS";
 export const USER_LOADING = "USER_LOADING";
 export const SET_CURRENT_USER = "SET_CURRENT_USER";
+
+export const GET_USER_POSTS = "GET_USER_POSTS";
+export const SET_USER_PROFILE_LOADING = "USER_PROFILE_LOADING";
+
+export const GET_HOME_PAGE = "GET_HOME_PAGE";
+export const SET_HOME_PAGE_LOADING = "SET_HOME_PAGE_LOADING";
+export const GET_POPULAR = "GET_POPULAR";
+export const SET_POPULAR = "SET_POPULAR";
