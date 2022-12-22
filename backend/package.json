@@ -20,7 +20,7 @@
     "express-session": "^1.17.1",
     "fs": "0.0.1-security",
     "javascript-time-ago": "^2.3.8",
-    "jsonwebtoken": "^8.5.1",
+    "jsonwebtoken": "^9.0.0",
     "method-override": "^3.0.0",
     "mongodb": "^3.6.10",
     "mongoose": "^5.13.3",
